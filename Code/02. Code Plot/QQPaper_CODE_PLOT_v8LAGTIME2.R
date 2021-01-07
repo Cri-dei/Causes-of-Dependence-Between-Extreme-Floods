@@ -42,7 +42,17 @@ library(cowplot)
 #Lagtime 5 or 7 days
 Lag_time<-5
 
-setwd(paste0("C:/Users/39349/Documents/Regional/Lag time/Lagtime_",Lag_time,"/Workspace"))
+##Choose directory
+
+#pc ufficio
+#setwd("D:/PROJECTS/Regional/DISTANCE_selection/Data")
+path<-c("C:/PROJECTS 2021/QQ")
+#pc portatile
+#path<-c("C:/Users/39349/Documents/Regional")
+
+
+
+setwd(paste0(path,"/Lag time/Lagtime_",Lag_time,"/Workspace"))
 load(paste0("M_ALL_perc_LAG_",Lag_time,".RData"))
 
 ############# Load all the data ##########################
@@ -59,7 +69,7 @@ load(file=paste0("M_ALL_",pvalue,"_perc_LAG_",Lag_time,".RData"))
 #load("C:/Users/39349/Documents/Regional/Workspace/M_ALL_INDIPENDENT_perc.RData")
 
 
-setwd(paste0("C:/Users/39349/Documents/Regional/Lag time/Lagtime_",Lag_time,"/Plotcheck"))
+setwd(paste0(path,"/Lag time/Lagtime_",Lag_time,"/Plotcheck"))
 
 ##############################
 ####################          PLOT CODE            ##########################                      
