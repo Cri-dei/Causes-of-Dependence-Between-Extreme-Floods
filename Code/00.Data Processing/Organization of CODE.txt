@@ -1,0 +1,19 @@
+###############à########QQ WORK ##############################
+###################Author: Cristina Deidda#####################
+##############################and##############################
+####################### Leila Rahimi ##########################
+
+Organization of the paper:
+
+
+1.Code: UK_V8_QEXTREME_10PERCENT_LAG10
+ 	Path: pc office: D:\PROJECTS\Regional\CODE\UK
+	laptop: C:\Users\39349\Documents\Regional\Code\Data Processing
+ Info:
+ Taking initial values for each station, computing couples taking into account the lag time and years in common
+ and computing KT for each couple with randomization.
+
+2. Code: Data_Processing_Initial_Matrix
+	Info: Take out initial NA, station without hydrological info and just length >20 data
+
+
