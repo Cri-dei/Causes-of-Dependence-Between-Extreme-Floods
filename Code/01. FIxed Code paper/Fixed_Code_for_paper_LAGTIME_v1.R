@@ -5,6 +5,7 @@
 #2) Eliminate column for which we don't have coordinates
 #3) Select just the couples with 20 data in commmon
 #3) create m_dep perc and m_ind perc
+#4) Save M_all for each Lag time selected
 
 library(plotly)
 library(gridExtra)
@@ -12,8 +13,11 @@ library(ggpubr)
 
 #pc ufficio
 #setwd("D:/PROJECTS/Regional/DISTANCE_selection/Data")
+path<-c("C:/PROJECTS 2021/QQ")
 #pc portatile
-setwd("C:/Users/39349/Documents/Regional/Data")
+#path<-c("C:/Users/39349/Documents/Regional")
+
+setwd(paste0(path,"/Data"))
 
 #Load initial data
 M_ALL_altitude<- read.table("Catch_info_Altitude.csv", header = TRUE, sep=",")
@@ -24,13 +28,14 @@ SPRHOST<- data.frame(read.table("SPRHOST_coeff.csv", header = TRUE, sep=","))
 
 #Possible lag time= 5,7 #
 
-################!  CHOOOSE LAG TIME  !##################à
+################!  CHOOOSE LAG TIME  !##################?
 #Lag_time<-c(5,7)
 
 Lag_time<-10
+Lag_time<-5
 ##############################################
 
-setwd(paste0("C:/Users/39349/Documents/Regional/Lag time/Lagtime_",Lag_time,"/InitialData"))
+setwd(paste0(path,"/Lag time/Lagtime_",Lag_time,"/InitialData"))
 KT_M_Final_available_20_Num<-read.table("KT_M_Final_available_20_Num.csv", header = TRUE, sep=";") 
 
 
@@ -139,7 +144,7 @@ Diff2[x,Cl]<-MATRIX2[i,Cl]
 
 Diff2<-data.frame(Diff2)
 
-################# M_ALL ADDING NSY/NALL AND X, X.1########################à
+################# M_ALL ADDING NSY/NALL AND X, X.1########################?
 
 pvalue<-0.01
 #PVALUE:0.01
@@ -168,11 +173,11 @@ for( i in 1:nrow(M_ALL))
 }
 
 
-######## Merge part #######################à
+######## Merge part #######################?
 
 M_ALL_perc <- merge(M_ALL, Diff2, by.x = "CODE", by.y = "N_couple") 
 
-########### FOR DEPENDENT AND INDEPENDENT ##########################à
+########### FOR DEPENDENT AND INDEPENDENT ##########################?
 #Save possibility
 
 
@@ -192,7 +197,7 @@ M_ALL_IND_perc0.01<- M_ALL_perc[M_ALL_perc$KendalT.p.value>pvalue,]
 
 #########SAVE ALL DATAFRAME ############################
 
-setwd(paste0("C:/Users/39349/Documents/Regional/Lag time/Lagtime_",Lag_time,"/Workspace"))
+setwd(paste0(path,"/Lag time/Lagtime_",Lag_time,"/Workspace"))
 
 save(pvalue,file="Pvalue.RData")
 save(M_ALL,M_ALL_perc,file=paste0("M_ALL_perc_LAG_",Lag_time,".RData"))
