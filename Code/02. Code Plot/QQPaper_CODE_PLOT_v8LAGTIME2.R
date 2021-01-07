@@ -69,7 +69,7 @@ load(file=paste0("M_ALL_",pvalue,"_perc_LAG_",Lag_time,".RData"))
 #load("C:/Users/39349/Documents/Regional/Workspace/M_ALL_INDIPENDENT_perc.RData")
 
 
-setwd(paste0(path,"/Lag time/Lagtime_",Lag_time,"/Plotcheck"))
+setwd(paste0(path,"/Lag time/Lagtime_",Lag_time,"/Plot"))
 
 ##############################
 ####################          PLOT CODE            ##########################                      
