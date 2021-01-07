@@ -204,5 +204,5 @@ save(M_ALL,M_ALL_perc,file=paste0("M_ALL_perc_LAG_",Lag_time,".RData"))
 save(M_ALL_IND_0.01,M_ALL_IND_perc0.01,pvalue,file=paste0("M_ALL_IND_perc_",pvalue,"_LAG_",Lag_time,".RData"))
 save(M_ALL_0.01,M_ALL_0.01_perc,M_ALL_0.01_POS_perc,M_ALL_0.01_POS,pvalue,file=paste0("M_ALL_",pvalue,"_perc_LAG_",Lag_time,".RData"))
 
-print(paste0("Everything have been saved in: C:/Users/39349/Documents/Regional/Lag time/Lagtime_",Lag_time,"/Workspace"))
+print(paste0("Everything have been saved in: ",path,"/Lag time/Lagtime_",Lag_time,"/Workspace"))
 ##########################################################################################
