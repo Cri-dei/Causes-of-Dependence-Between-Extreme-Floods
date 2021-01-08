@@ -51,11 +51,40 @@ setwd(paste0("C:/Users/39349/Documents/Regional/Lag time/Lagtime_",Lag_time,"/Wo
 #02)M_ALL_IND_perc_LAG_%% -> M_ALL for indipendent couples with selected pvalue
 #03)M_ALL_0.01_perc_LAG_%% -> M_ALL for dependent couples with selected pvalue and positive
 
+##Choose directory
+
+#pc ufficio
+#setwd("D:/PROJECTS/Regional/DISTANCE_selection/Data")
+path<-c("C:/PROJECTS 2021/QQ")
+#pc portatile
+#path<-c("C:/Users/39349/Documents/Regional")
+
+
+setwd(paste0(path,"/Lag time/Lagtime_",Lag_time,"/Workspace_Bonf"))
+load(paste0("M_ALLbonf_perc_LAG_",Lag_time,".RData"))
+
+
+############# Load all the data ##########################
+
+
 load("Pvalue.RData")
 
-load(file=paste0("M_ALL_perc_LAG_",Lag_time,".RData"))
-load(file=paste0("M_ALL_IND_perc_",pvalue,"_LAG_",Lag_time,".RData"))
-load(file=paste0("M_ALL_",pvalue,"_perc_LAG_",Lag_time,".RData"))
+load(file=paste0("M_ALLbonf_perc_LAG_",Lag_time,".RData"))
+load(file=paste0("M_ALLbonf_DEP_perc_LAG_",Lag_time,".RData"))
+load(file=paste0("M_ALLbonf_IND_perc_LAG_",Lag_time,".RData"))
+
+
+#load("ALLDATA01_andonlyPOSITIVE.RData")
+#load("M_ALL_001.RData")
+#load("C:/Users/39349/Documents/Regional/Workspace/M_ALL_INDIPENDENT_perc.RData")
+
+
+
+setwd(paste0(path,"/Lag time/Lagtime_",Lag_time,"/Plot_Bonf"))
+
+
+
+
 
 ####THE PVALUE IS CHOOSEN IN THE PREVIOUS CODE ############
 ################## CODE FOR PVALUE= 0.01 ################################
@@ -148,7 +177,7 @@ setwd(paste0("C:/Users/39349/Documents/Regional/Lag time/Lagtime_",Lag_time,"/Pl
  
 xxx<-1
 
-Predictors<-c("Maximum.altitude","Arable.horticultural", "Grassland", "Mountain.heath.bog","Urban.extent","ASPBAR..Â..",         
+Predictors<-c("Maximum.altitude","Arable.horticultural", "Grassland", "Mountain.heath.bog","Urban.extent","ASPBAR..?..",         
               "BFIHOST....", "DPSBAR..m.km.","PROPWET")
 
 v1<-match(Predictors,colnames(M_ALL_0.01_perc))
@@ -757,7 +786,7 @@ hh<-4
     dev.off()
     
     
- ############################################################################################################ààààà   
+ ############################################################################################################?????   
     
     
     
@@ -772,7 +801,7 @@ hh<-4
     
     
 
-    ###############################################ààààààààààààààààààààààààààààààààààààààààààààààààààààààààààà
+    ###############################################???????????????????????????????????????????????????????????
     
     
     #Dependent
