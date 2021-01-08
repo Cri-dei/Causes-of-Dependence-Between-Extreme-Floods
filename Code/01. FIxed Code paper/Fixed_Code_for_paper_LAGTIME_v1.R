@@ -227,8 +227,8 @@ setwd(paste0(path,"/Lag time/Lagtime_",Lag_time,"/Workspace_Bonf"))
 
 save(Pv_th,file="Pvalue.RData")
 save(M_ALL,M_ALL_perc,M_ALL_adj,file=paste0("M_ALLbonf_perc_LAG_",Lag_time,".RData"))
-save(M_ALL_IND,M_ALL_IND,pvalue,file=paste0("M_ALL_INDbonf_perc_",pvalue,"_LAG_",Lag_time,".RData"))
-save(M_ALL_DEP,M_ALL_DEP_perc,M_ALL_DEP_POS_perc,M_ALL_DEP_POS,pvalue,file=paste0("M_ALLbonf_",pvalue,"_perc_LAG_",Lag_time,".RData"))
+save(M_ALL_IND,M_ALL_IND,Pv_th,file=paste0("M_ALLbonf_IND_perc_LAG_",Lag_time,".RData"))
+save(M_ALL_DEP,M_ALL_DEP_perc,M_ALL_DEP_POS_perc,M_ALL_DEP_POS,Pv_th,file=paste0("M_ALLbonf_DEP_perc_LAG_",Lag_time,".RData"))
 
 print(paste0("BONFERRONI ADJ PVALUE: Everything have been saved in: ",path,"/Lag time/Lagtime_",Lag_time,"/Workspace_Bonf"))
 
