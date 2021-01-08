@@ -203,23 +203,43 @@ M_ALL_adj$CHECK2<- M_ALL_adj$KendalT.p.value<=Pv_th
 
 DEP<- M_ALL_adj[which(M_ALL_adj$CHECK2=="TRUE"),]
 
+# CODE STATIONS with adjusted pvalue
+
 Code_stat_ok<-  M_ALL_adj$CODE[which(M_ALL_adj$CHECK2=="TRUE")]
 
 
-############# FOR ADJUSTED PVALUE ####################
+############# FOR FALSE DISCOVERY RATE ADJUSTED PVALUE ####################
 
 
 M_ALL_DEP<- M_ALL[which(M_ALL$CODE%in%Code_stat_ok),]
-M_ALL_DEP_perc<-M_ALL_perc[which(M_ALL_perc$CODE== Code_stat_ok),]
+M_ALL_DEP_perc<-M_ALL_perc[which(M_ALL_perc$CODE%in%Code_stat_ok),]
 
-M_ALL_DEP_POS<-M_ALL_0.01[M_ALL_0.01$KendalT.value>0,]
-M_ALL_DEP_POS_perc<-M_ALL_0.01_perc[M_ALL_0.01_perc$KendalT.value>0,]
+M_ALL_DEP_POS<-M_ALL_DEP[M_ALL_DEP$KendalT.value>0,]
+M_ALL_DEP_POS_perc<-M_ALL_DEP_perc[M_ALL_DEP_perc$KendalT.value>0,]
 
 M_ALL_IND<- M_ALL[-which(M_ALL$CODE%in%Code_stat_ok),]
 M_ALL_IND_perc<- M_ALL_perc[-which(M_ALL_perc$CODE%in%Code_stat_ok),]
 
 
+#########SAVE ALL DATAFRAME ############################
+
+setwd(paste0(path,"/Lag time/Lagtime_",Lag_time,"/Workspace_Bonf"))
+
+save(Pv_th,file="Pvalue.RData")
+save(M_ALL,M_ALL_perc,M_ALL_adj,file=paste0("M_ALLbonf_perc_LAG_",Lag_time,".RData"))
+save(M_ALL_IND,M_ALL_IND,pvalue,file=paste0("M_ALL_INDbonf_perc_",pvalue,"_LAG_",Lag_time,".RData"))
+save(M_ALL_DEP,M_ALL_DEP_perc,M_ALL_DEP_POS_perc,M_ALL_DEP_POS,pvalue,file=paste0("M_ALLbonf_",pvalue,"_perc_LAG_",Lag_time,".RData"))
+
+print(paste0("BONFERRONI ADJ PVALUE: Everything have been saved in: ",path,"/Lag time/Lagtime_",Lag_time,"/Workspace_Bonf"))
+
+print(paste0("pvalue selected for Bonferroni is:",Pv_th))
+
+##########################################################################################
+
+
 ############# FOR FIXED PVALUE ####################
+
+print(paste0("BE CAREFUL: The pvalue selected is:",pvalue))
 
 ########### FOR DEPENDENT AND INDEPENDENT ##########################?
 #Save possibility
