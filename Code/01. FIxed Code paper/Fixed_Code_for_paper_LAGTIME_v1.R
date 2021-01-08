@@ -6,6 +6,7 @@
 #3) Select just the couples with 20 data in commmon
 #3) create m_dep perc and m_ind perc
 #4) Save M_all for each Lag time selected
+# Added Bonferroni adjustment
 
 library(plotly)
 library(gridExtra)
@@ -176,6 +177,49 @@ for( i in 1:nrow(M_ALL))
 ######## Merge part #######################?
 
 M_ALL_perc <- merge(M_ALL, Diff2, by.x = "CODE", by.y = "N_couple") 
+
+######## FOR BONFERRONI Adjustment ###########################
+
+############### Bonferroni - False Discovery Rate ############################
+
+
+M_ALL_adj<-M_ALL[order(M_ALL$KendalT.p.value,decreasing=FALSE),]
+
+M_ALL_adj$Num<-seq(1,nrow(M_ALL_adj),1)
+
+M_ALL_adj$Bonpv<-0.05*M_ALL_adj$Num/nrow(M_ALL_adj)
+
+M_ALL_adj$CHECK<- M_ALL_adj$KendalT.p.value<=M_ALL_adj$Bonpv
+
+length(which(M_ALL_adj$CHECK=="TRUE"))
+
+Check_bonf<-which(M_ALL_adj$CHECK=="TRUE")
+
+Pv_th<-M_ALL_adj$KendalT.p.value[Check_bonf[length(Check_bonf)]] 
+
+
+M_ALL_adj$CHECK2<- M_ALL_adj$KendalT.p.value<=Pv_th
+
+
+DEP<- M_ALL_adj[which(M_ALL_adj$CHECK2=="TRUE"),]
+
+Code_stat_ok<-  M_ALL_adj$CODE[which(M_ALL_adj$CHECK2=="TRUE")]
+
+
+############# FOR ADJUSTED PVALUE ####################
+
+
+M_ALL_DEP<- M_ALL[which(M_ALL$CODE%in%Code_stat_ok),]
+M_ALL_DEP_perc<-M_ALL_perc[which(M_ALL_perc$CODE== Code_stat_ok),]
+
+M_ALL_DEP_POS<-M_ALL_0.01[M_ALL_0.01$KendalT.value>0,]
+M_ALL_DEP_POS_perc<-M_ALL_0.01_perc[M_ALL_0.01_perc$KendalT.value>0,]
+
+M_ALL_IND<- M_ALL[-which(M_ALL$CODE%in%Code_stat_ok),]
+M_ALL_IND_perc<- M_ALL_perc[-which(M_ALL_perc$CODE%in%Code_stat_ok),]
+
+
+############# FOR FIXED PVALUE ####################
 
 ########### FOR DEPENDENT AND INDEPENDENT ##########################?
 #Save possibility
