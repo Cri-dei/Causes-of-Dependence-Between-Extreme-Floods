@@ -80,6 +80,18 @@ setwd(paste0(path,"/Lag time/Lagtime_",Lag_time,"/Plot"))
 ###### 1. Kendall Tau- P value with Subplot   #############
 M_ALL_0.01<- M_ALL[M_ALL$KendalT.p.value<=0.01,]
 
+
+
+
+
+
+
+
+
+
+
+
+
 op <- par(no.readonly = TRUE)
 set.seed(42)
 
