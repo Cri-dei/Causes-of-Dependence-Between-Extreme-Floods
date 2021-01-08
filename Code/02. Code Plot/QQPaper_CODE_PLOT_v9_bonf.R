@@ -12,6 +12,8 @@
 #3. Kendall Tau and Distance with regression line
 #4. Mirrored Histogram for Near and Far couples
 
+# v9: instead of using pvalue= 0.01 we use Bonferroni e False error rate method.
+
 #For the DDMAP see code in DDMAPCODE#
 ############################################################
 ##### Enjoy :) #############
@@ -42,8 +44,20 @@ library(cowplot)
 #Lagtime 5 or 7 days
 Lag_time<-5
 
-setwd(paste0("C:/Users/39349/Documents/Regional/Lag time/Lagtime_",Lag_time,"/Workspace"))
+
+##Choose directory
+
+#pc ufficio
+#setwd("D:/PROJECTS/Regional/DISTANCE_selection/Data")
+path<-c("C:/PROJECTS 2021/QQ")
+#pc portatile
+#path<-c("C:/Users/39349/Documents/Regional")
+
+
+
+setwd(paste0(path,"/Lag time/Lagtime_",Lag_time,"/Workspace"))
 load(paste0("M_ALL_perc_LAG_",Lag_time,".RData"))
+
 
 ############# Load all the data ##########################
 
@@ -59,16 +73,46 @@ load(file=paste0("M_ALL_",pvalue,"_perc_LAG_",Lag_time,".RData"))
 #load("C:/Users/39349/Documents/Regional/Workspace/M_ALL_INDIPENDENT_perc.RData")
 
 
-setwd(paste0("C:/Users/39349/Documents/Regional/Lag time/Lagtime_",Lag_time,"/Plotcheck"))
 
-##############################
+setwd(paste0(path,"/Lag time/Lagtime_",Lag_time,"/Plot"))
+
+############### Bonferroni - False Discovery Rate ############################
+
+
+M_ALL_adj<-M_ALL[order(M_ALL$KendalT.p.value,decreasing=FALSE),]
+
+M_ALL_adj$Num<-seq(1,nrow(M_ALL_adj),1)
+
+M_ALL_adj$Bonpv<-0.05*M_ALL_adj$Num/nrow(M_ALL_adj)
+
+M_ALL_adj$CHECK<- M_ALL_adj$KendalT.p.value<=M_ALL_adj$Bonpv
+
+length(which(M_ALL_adj$CHECK=="TRUE"))
+
+Check_bonf<-which(M_ALL_adj$CHECK=="TRUE")
+
+Pv_th<-M_ALL_adj$KendalT.p.value[Check_bonf[length(Check_bonf)]] 
+
+M_ALL_adj$CHECK2<- M_ALL_adj$KendalT.p.value<=Pv_th
+
+
+DEP<- M_ALL_adj[which(M_ALL_adj$CHECK2=="TRUE"),]
+
+### Dependent Couple
+
+#M_ALL_0.01<- M_ALL[M_ALL$KendalT.p.value<=0.01,]
+
+M_ALL_0.01<- DEP
+
+
+
 ####################          PLOT CODE            ##########################                      
                        ###########################
 ##########################KT AND MAP UK #################################                       
 # 1.1. plot: KT e P value 
 
 ###### 1. Kendall Tau- P value with Subplot   #############
-M_ALL_0.01<- M_ALL[M_ALL$KendalT.p.value<=0.01,]
+
 
 op <- par(no.readonly = TRUE)
 set.seed(42)
