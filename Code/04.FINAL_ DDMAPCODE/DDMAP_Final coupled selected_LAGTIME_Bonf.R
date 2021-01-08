@@ -43,7 +43,7 @@ Lag_time<-5
 #######################################################################
 #Load Workspace
 
-setwd(paste0("C:/Users/39349/Documents/Regional/Lag time/Lagtime_",Lag_time,"/Workspace"))
+#setwd(paste0("C:/Users/39349/Documents/Regional/Lag time/Lagtime_",Lag_time,"/Workspace"))
 
 
 #Workspace needed:
@@ -89,7 +89,7 @@ setwd(paste0(path,"/Lag time/Lagtime_",Lag_time,"/Plot_Bonf"))
 ####THE PVALUE IS CHOOSEN IN THE PREVIOUS CODE ############
 ################## CODE FOR PVALUE= 0.01 ################################
 
-print( paste("The pvalue selected is",pvalue))
+print( paste("The pvalue selected is",Pv_th))
 
 #path<-paste0("pvalue",pvalue)
 
@@ -128,6 +128,46 @@ print( paste("The pvalue selected is",pvalue))
 #   else{ if(M_ALL_IND_perc$KT_pvalue_Asy[i]<=0.01){M_ALL_IND_perc$X.1[i]<-2} else{M_ALL_IND_perc$X.1[i]<-1}
 #   }
 # }
+
+
+
+M_ALL_DEP_Asy20<-M_ALL_DEP[which(M_ALL_DEP$Num_Asyncr_occ>=20),]
+
+M_ALLch<-M_ALL_DEP_Asy20[order(M_ALL_DEP_Asy20$KT_pvalue_Asy,decreasing=FALSE),]
+
+M_ALLch$Num<-seq(1,nrow(M_ALLch),1)
+
+M_ALLch$Bonpv<-0.05*M_ALLch$Num/nrow(M_ALLch)
+
+M_ALLch$CHECK<- M_ALLch$KT_pvalue_Asy<=M_ALLch$Bonpv
+
+length(which(M_ALLch$CHECK=="TRUE"))
+
+ok<-which(M_ALLch$CHECK=="TRUE")
+
+Pv_Asy_th<-M_ALLch$KT_pvalue_Asy[ok[length(ok)]] 
+
+####################
+M_ALL_0.01_POS_perc<-M_ALL_DEP_perc
+
+M_ALL_IND_perc0.01<-M_ALL_IND_perc
+
+
+# ############################# ASY PART #################################
+# #Selection of Async data with more than 20 data and pvalue 0.01 #
+# # 
+ for( i in 1:nrow(M_ALL_0.01_POS_perc))
+{
+ if(M_ALL_0.01_POS_perc$Num_Asyncr_occ[i]<20){M_ALL_0.01_POS_perc$X.1[i]<-NA}
+  else{ if(M_ALL_0.01_POS_perc$KT_pvalue_Asy[i]<=Pv_Asy_th){M_ALL_0.01_POS_perc$X.1[i]<-2} else{M_ALL_0.01_POS_perc$X.1[i]<-1}
+  }
+ }
+
+
+
+
+
+
 
 M_ALL_0.01_POS_perc$Class[M_ALL_0.01_POS_perc$N.SY.N.ALL>=0.60]<-"High Syn"
 M_ALL_0.01_POS_perc$X.1[M_ALL_0.01_POS_perc$N.SY.N.ALL>=0.60]<-c(3)
@@ -180,6 +220,7 @@ xxx<-1
 Predictors<-c("Maximum.altitude","Arable.horticultural", "Grassland", "Mountain.heath.bog","Urban.extent","ASPBAR..?..",         
               "BFIHOST....", "DPSBAR..m.km.","PROPWET")
 
+
 v1<-match(Predictors,colnames(M_ALL_0.01_perc))
 
 #for(hh in 1:8){
@@ -206,7 +247,8 @@ hh<-4
     Final_D<-c("X50.Altitude","BFIHOST....","SPRHOST","LDP..km.", "Mountain.heath.bog" , 
                "Arable.horticultural","Catchment.area","PROPWET")
     
-    
+    Final_D<-c("X50.Altitude","BFIHOST....","SPRHOST","LDP..km.","Catchment.area","PROPWET")
+  
     M1_DEP_0[,2]<- apply(M_ALL_0.01_POS_perc[,Final_D],1,mean)   
     M1_IND_0[,2]<- apply(M_ALL_IND_perc0.01[,Final_D],1,mean)   
     
