@@ -32,6 +32,7 @@ library(mapdata)
 library(mapproj)
 library(ggplot2)
 library(cowplot)
+library(magick)
 
 ########### CHOOSE INITIAL DATA #############
 #Lagtime 10 days
@@ -54,9 +55,8 @@ path<-c("C:/PROJECTS 2021/QQ")
 #path<-c("C:/Users/39349/Documents/Regional")
 
 
-
-setwd(paste0(path,"/Lag time/Lagtime_",Lag_time,"/Workspace"))
-load(paste0("M_ALL_perc_LAG_",Lag_time,".RData"))
+setwd(paste0(path,"/Lag time/Lagtime_",Lag_time,"/Workspace_Bonf"))
+load(paste0("M_ALLbonf_perc_LAG_",Lag_time,".RData"))
 
 
 ############# Load all the data ##########################
@@ -64,9 +64,10 @@ load(paste0("M_ALL_perc_LAG_",Lag_time,".RData"))
 
 load("Pvalue.RData")
 
-load(file=paste0("M_ALL_perc_LAG_",Lag_time,".RData"))
-load(file=paste0("M_ALL_IND_perc_",pvalue,"_LAG_",Lag_time,".RData"))
-load(file=paste0("M_ALL_",pvalue,"_perc_LAG_",Lag_time,".RData"))
+load(file=paste0("M_ALLbonf_perc_LAG_",Lag_time,".RData"))
+load(file=paste0("M_ALLbonf_DEP_perc_LAG_",Lag_time,".RData"))
+load(file=paste0("M_ALLbonf_IND_perc_LAG_",Lag_time,".RData"))
+
 
 #load("ALLDATA01_andonlyPOSITIVE.RData")
 #load("M_ALL_001.RData")
@@ -74,35 +75,7 @@ load(file=paste0("M_ALL_",pvalue,"_perc_LAG_",Lag_time,".RData"))
 
 
 
-setwd(paste0(path,"/Lag time/Lagtime_",Lag_time,"/Plot"))
-
-############### Bonferroni - False Discovery Rate ############################
-
-
-M_ALL_adj<-M_ALL[order(M_ALL$KendalT.p.value,decreasing=FALSE),]
-
-M_ALL_adj$Num<-seq(1,nrow(M_ALL_adj),1)
-
-M_ALL_adj$Bonpv<-0.05*M_ALL_adj$Num/nrow(M_ALL_adj)
-
-M_ALL_adj$CHECK<- M_ALL_adj$KendalT.p.value<=M_ALL_adj$Bonpv
-
-length(which(M_ALL_adj$CHECK=="TRUE"))
-
-Check_bonf<-which(M_ALL_adj$CHECK=="TRUE")
-
-Pv_th<-M_ALL_adj$KendalT.p.value[Check_bonf[length(Check_bonf)]] 
-
-M_ALL_adj$CHECK2<- M_ALL_adj$KendalT.p.value<=Pv_th
-
-
-DEP<- M_ALL_adj[which(M_ALL_adj$CHECK2=="TRUE"),]
-
-### Dependent Couple
-
-#M_ALL_0.01<- M_ALL[M_ALL$KendalT.p.value<=0.01,]
-
-M_ALL_0.01<- DEP
+setwd(paste0(path,"/Lag time/Lagtime_",Lag_time,"/Plot_Bonf"))
 
 
 
@@ -117,19 +90,19 @@ M_ALL_0.01<- DEP
 op <- par(no.readonly = TRUE)
 set.seed(42)
 
-plot(M_ALL$KendalT.value, M_ALL$KendalT.p.value, xlab=c("Kendall's tau"), ylab=c("p-value"), col=M_ALL_0.01$Distance, cex.lab=1.2, cex.axis=1.2,  cex.sub=1.2) 
+plot(M_ALL$KendalT.value, M_ALL$KendalT.p.value, xlab=c("Kendall's tau"), ylab=c("p-value"), col=M_ALL$Distance, cex.lab=1.2, cex.axis=1.2,  cex.sub=1.2) 
 abline(h =0.01, untf = FALSE, col="red",lty = "dashed",lwd=2) 
 
 par(new=TRUE, oma=c(12,2,1,1))
 layout(matrix(1:2,1))
-plot(M_ALL_0.01$KendalT.value, M_ALL_0.01$KendalT.p.value, xlab=c("Kendall's tau"), ylab=c("p-value"), col=M_ALL_0.01$Distance) 
+plot(M_ALL_DEP$KendalT.value, M_ALL_DEP$KendalT.p.value, xlab=c("Kendall's tau"), ylab=c("p-value"), col=M_ALL_DEP$Distance) 
 abline(h =0.01, untf = FALSE, col="red",lty = "dashed",lwd=2) 
 
 par(op)
 
 ###### 1.2 Kendall Tau- P value and distance with Subplot ################
 
-ggplot(data=M_ALL_0.01,aes(x=KendalT.value, y=KendalT.p.value))+
+ggplot(data=M_ALL_DEP,aes(x=KendalT.value, y=KendalT.p.value))+
   geom_point(aes(color =Distance),size = 2)+ scale_color_gradientn(colours = rainbow(8))+
   xlab("Kendall's Tau")+ ylab("p-value")
 
@@ -143,7 +116,7 @@ main.plot<- main.plot+theme(panel.grid.major = element_blank(), panel.grid.minor
                             panel.background = element_blank(), axis.line = element_line(colour = "black"))
 
 
-inset.plot <- ggplot(data=M_ALL_0.01,aes(x=KendalT.value, y=KendalT.p.value))+
+inset.plot <- ggplot(data=M_ALL_DEP,aes(x=KendalT.value, y=KendalT.p.value))+
   geom_point(aes(color =Distance),size = 2, show.legend = FALSE)+ scale_color_gradientn(colours = rainbow(8))+
   xlab("Kendall's Tau")+ ylab("p-value")
 
@@ -167,7 +140,7 @@ dev.off()
 
 UK <- map_data(map = "world", region = "UK")
 
-df<-data.frame(M_ALL_0.01$Northing_1,M_ALL_0.01$Easting_1)
+df<-data.frame(M_ALL_DEP$Northing_1,M_ALL_DEP$Easting_1)
 colnames(df)<-c("Northing_1","Easting_1")
 
 coord_point<-df %>%
@@ -281,7 +254,7 @@ GG_3<-ggplot(data=M_ALL, aes(x=Distance, group=XG, fill=XG ))+
 
 GG_4v2<-ggplot(data=M_ALL ,aes(x=KendalT.value,y=N.SY.N.ALL,color = as.factor(X)))+geom_point(aes(shape=as.factor(X)),alpha = 0.3, size=0.9) + theme_bw()+ 
   scale_fill_manual(values=c("#FF3333", "#33CCCC"))+ labs(x = "Kendall's tau", y="Syn")+
-  scale_size_manual(values=c(0.1,0.8))
+  scale_size_manual(values=c(0.1,0.8))+
   theme(legend.position = "none")
 
 
@@ -355,25 +328,23 @@ GG_correl_v3
 #Save Correlogram version 3
 ggsave("02.Correlogram_wlg_v3.jpeg", units="in",dpi=400, height=7,width =12)
 
-# 
-
 
 ########### 3. Kendall Tau and Distance with regression line ###########
 
-#M_ALL_0.01<-M_ALL_0.01_POS
+#M_ALL_DEP<-M_ALL_DEP_POS
 
 png(filename = "03_KTHIST-1.png",
     width = 10.33, height = 6.29, units = "in",   res =400) 
  
-gh<-which( M_ALL_0.01$KendalT.value>0 )
+gh<-which( M_ALL_DEP$KendalT.value>0 )
 
 #Regression for Only positive
-q1<-M_ALL_0.01$Distance[gh]
-y<- M_ALL_0.01$KendalT.value[gh]
+q1<-M_ALL_DEP$Distance[gh]
+y<- M_ALL_DEP$KendalT.value[gh]
 
 #Regression for All
-#q1<-M_ALL_0.01$Distance
-#y<- M_ALL_0.01$KendalT.value
+#q1<-M_ALL_DEP$Distance
+#y<- M_ALL_DEP$KendalT.value
 
 
 model <- lm(y ~ poly(q1,4))
@@ -392,16 +363,16 @@ yy = c(-1,1.5,1.5,-1)
 ## Distance selection
 Dist_sel<-230
 
-M_near_01_POS<-M_ALL_0.01_POS[M_ALL_0.01_POS$Distance<=Dist_sel,]
-Near_perc_POS<-M_ALL_0.01_POS_perc[M_ALL_0.01_POS_perc$Distance.x<=Dist_sel,]
-M_far_01_POS<-M_ALL_0.01_POS[M_ALL_0.01_POS$Distance>Dist_sel,]
-Far_perc_POS<-M_ALL_0.01_POS_perc[M_ALL_0.01_POS_perc$Distance.x>Dist_sel,]
+M_near_01_POS<-M_ALL_DEP_POS[M_ALL_DEP_POS$Distance<=Dist_sel,]
+Near_perc_POS<-M_ALL_DEP_POS_perc[M_ALL_DEP_POS_perc$Distance.x<=Dist_sel,]
+M_far_01_POS<-M_ALL_DEP_POS[M_ALL_DEP_POS$Distance>Dist_sel,]
+Far_perc_POS<-M_ALL_DEP_POS_perc[M_ALL_DEP_POS_perc$Distance.x>Dist_sel,]
 
 ############### 
-plot(M_ALL_0.01$Distance[M_ALL_0.01$Distance<Dist_sel], M_ALL_0.01$KendalT.value[M_ALL_0.01$Distance<230],col=rgb(0,0,1,1/4),xlab='Distance [km]',
+plot(M_ALL_DEP$Distance[M_ALL_DEP$Distance<Dist_sel], M_ALL_DEP$KendalT.value[M_ALL_DEP$Distance<230],col=rgb(0,0,1,1/4),xlab='Distance [km]',
                                                 ylab="Kendall's tau",pch=19, cex.lab=1.2, cex.axis=1.2,  cex.sub=1.2, ylim=c(0,1), xlim=c(0,600))
 
-points(M_ALL_0.01$Distance[M_ALL_0.01$Distance>=Dist_sel], M_ALL_0.01$KendalT.value[M_ALL_0.01$Distance>=230],col=rgb(1,0,0,1/4),xlab='Distance [km]',
+points(M_ALL_DEP$Distance[M_ALL_DEP$Distance>=Dist_sel], M_ALL_DEP$KendalT.value[M_ALL_DEP$Distance>=230],col=rgb(1,0,0,1/4),xlab='Distance [km]',
                                                                 ylab="Kendall's tau",pch=19, cex.lab=1.2, cex.axis=1.2,  cex.sub=1.2, ylim=c(0,1))
 
 
@@ -455,17 +426,17 @@ ggsave("02.KT-HIST1.jpeg", units="in", dpi=400, width=7.28,height=7.76)
 Summary<-data.frame(matrix(,6,9))
 
 Summary[1,1]<-"All Couple"
-Summary[1,2]<-nrow(M_ALL_0.01_POS)
+Summary[1,2]<-nrow(M_ALL_DEP_POS)
 Summary[2,1]<-"Independent"
-Summary[2,2]<-nrow(M_ALL_0.01_POS)- nrow(M_ALL_0.01_POS_perc)
-Summary[2,3]<-round((nrow(M_ALL_0.01_POS)- nrow(M_ALL_0.01_POS_perc))*100/nrow(M_ALL_0.01_POS),digit=2)
+Summary[2,2]<-nrow(M_ALL_DEP_POS)- nrow(M_ALL_DEP_POS_perc)
+Summary[2,3]<-round((nrow(M_ALL_DEP_POS)- nrow(M_ALL_DEP_POS_perc))*100/nrow(M_ALL_DEP_POS),digit=2)
 Summary[3,1]<-"Dependent"
-Summary[3,2]<-nrow(M_ALL_0.01_POS_perc)
-Summary[3,3]<-round(nrow(M_ALL_0.01_POS_perc)*100/nrow(M_ALL_0.01_POS),digit=2)
+Summary[3,2]<-nrow(M_ALL_DEP_POS_perc)
+Summary[3,3]<-round(nrow(M_ALL_DEP_POS_perc)*100/nrow(M_ALL_DEP_POS),digit=2)
 
 Summary[4,1]<-"Near couple"
 Summary[4,2]<-nrow(Near_perc_POS)
-Summary[4,3]<-round(nrow(Near_perc_POS)/nrow(M_ALL_0.01_POS_perc),digit=2)
+Summary[4,3]<-round(nrow(Near_perc_POS)/nrow(M_ALL_DEP_POS_perc),digit=2)
 Summary[4,4]<-round(median(Near_perc_POS$KendalT.value),digit=2)
 Summary[4,5]<-round(max(Near_perc_POS$KendalT.value),digit=2)
 Summary[4,6]<-round(min(Near_perc_POS$KendalT.value),digit=2)
@@ -476,7 +447,7 @@ Summary[4,9]<-round(min(Near_perc_POS$N.SY.N.ALL),digit=2)
 
 Summary[5,1]<-"Far couple"
 Summary[5,2]<-nrow(Far_perc_POS)
-Summary[5,3]<-round(nrow(Far_perc_POS)/nrow(M_ALL_0.01_POS_perc),digit=2)
+Summary[5,3]<-round(nrow(Far_perc_POS)/nrow(M_ALL_DEP_POS_perc),digit=2)
 Summary[5,4]<-round(median(Far_perc_POS$KendalT.value),digit=2)
 Summary[5,5]<-round(max(Far_perc_POS$KendalT.value),digit=2)
 Summary[5,6]<-round(min(Far_perc_POS$KendalT.value),digit=2)
@@ -486,11 +457,11 @@ Summary[5,9]<-round(min(Far_perc_POS$N.SY.N.ALL),digit=2)
 
 colnames(Summary)<-c("Type","Number","Percentage","Median KT","Max KT","Min KT","Median SYN","Max SYN","Min SYN")
 
-Hsyn<-M_ALL_0.01_POS[which(M_ALL_0.01_POS$N.SY.N.ALL>=0.60),]
+Hsyn<-M_ALL_DEP_POS[which(M_ALL_DEP_POS$N.SY.N.ALL>=0.60),]
 
 Summary[6,1]<-"High Syncrony couple"
 Summary[6,2]<-nrow(Hsyn)
-Summary[6,3]<-round(nrow(Hsyn)/nrow(M_ALL_0.01_POS_perc),digit=2)
+Summary[6,3]<-round(nrow(Hsyn)/nrow(M_ALL_DEP_POS_perc),digit=2)
 Summary[6,4]<-round(median(Hsyn$KendalT.value),digit=2)
 Summary[6,5]<-round(max(Hsyn$KendalT.value),digit=2)
 Summary[6,6]<-round(min(Hsyn$KendalT.value),digit=2)
@@ -498,11 +469,11 @@ Summary[6,7]<-round(median(Hsyn$N.SY.N.ALL),digit=2)
 Summary[6,8]<-round(max(Hsyn$N.SY.N.ALL),digit=2)
 Summary[6,9]<-round(min(Hsyn$N.SY.N.ALL),digit=2)
 
-Mediumsyn<-M_ALL_0.01_POS[which(M_ALL_0.01_POS$N.SY.N.ALL>=0.40 & M_ALL_0.01_POS$N.SY.N.ALL<0.60),]
+Mediumsyn<-M_ALL_DEP_POS[which(M_ALL_DEP_POS$N.SY.N.ALL>=0.40 & M_ALL_DEP_POS$N.SY.N.ALL<0.60),]
 
 Summary[6,1]<-"Medium Syncrony couple"
 Summary[6,2]<-nrow(Mediumsyn)
-Summary[6,3]<-round(nrow(Mediumsyn)/nrow(M_ALL_0.01_POS_perc),digit=2)
+Summary[6,3]<-round(nrow(Mediumsyn)/nrow(M_ALL_DEP_POS_perc),digit=2)
 Summary[6,4]<-round(median(Mediumsyn$KendalT.value),digit=2)
 Summary[6,5]<-round(max(Mediumsyn$KendalT.value),digit=2)
 Summary[6,6]<-round(min(Mediumsyn$KendalT.value),digit=2)
@@ -525,9 +496,9 @@ dev.off()
 png(filename = "PIECHART.png",
     width = 10.33, height = 6.29, units = "in",   res =400)
 
-HSyn<- length(which(M_ALL_0.01_POS$N.SY.N.ALL>=0.60))
-MediumSyn<- length(which(M_ALL_0.01_POS$N.SY.N.ALL>=0.40 & M_ALL_0.01_POS$N.SY.N.ALL<0.60))
-LowSyn<-length(which(M_ALL_0.01_POS$N.SY.N.ALL<0.40))
+HSyn<- length(which(M_ALL_DEP_POS$N.SY.N.ALL>=0.60))
+MediumSyn<- length(which(M_ALL_DEP_POS$N.SY.N.ALL>=0.40 & M_ALL_DEP_POS$N.SY.N.ALL<0.60))
+LowSyn<-length(which(M_ALL_DEP_POS$N.SY.N.ALL<0.40))
 
 
 slices <- c(HSyn, MediumSyn,LowSyn)
