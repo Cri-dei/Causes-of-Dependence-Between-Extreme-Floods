@@ -145,38 +145,6 @@ Diff2[x,Cl]<-MATRIX2[i,Cl]
 
 Diff2<-data.frame(Diff2)
 
-################# M_ALL ADDING NSY/NALL AND X, X.1########################?
-
-pvalue<-0.01
-#PVALUE:0.01
-
-M_ALL$N.SY.N.ALL<-M_ALL$Num_Syncr_occ/M_ALL$Number_data
-
-############################DEP AND INDEP ###############################
-#M_ALL$X : 2 if dependent 1 if independent
-
-for( i in 1:nrow(M_ALL))
-{
-  if( M_ALL$Number_data[i]<20){M_ALL$X[i]<-NA}
-  else{ if(M_ALL$KendalT.p.value[i]<=pvalue){M_ALL$X[i]<-2} else{M_ALL$X[i]<-1}
-  }
-}
-
-############################# ASY PART #################################
-#Selection of Async data with more than 20 data and pvalue 0.01 #
-#M_ALL$X.1 : 2 if ASY-dependent 1 if ASY-independent
-
-for( i in 1:nrow(M_ALL))
-{
-  if( M_ALL$Num_Asyncr_occ[i]<20){M_ALL$X.1[i]<-NA}
-  else{ if(M_ALL$KT_pvalue_Asy[i]<=pvalue){M_ALL$X.1[i]<-2} else{M_ALL$X.1[i]<-1}
-  }
-}
-
-
-######## Merge part #######################?
-
-M_ALL_perc <- merge(M_ALL, Diff2, by.x = "CODE", by.y = "N_couple") 
 
 ######## FOR BONFERRONI Adjustment ###########################
 
@@ -206,6 +174,40 @@ DEP<- M_ALL_adj[which(M_ALL_adj$CHECK2=="TRUE"),]
 # CODE STATIONS with adjusted pvalue
 
 Code_stat_ok<-  M_ALL_adj$CODE[which(M_ALL_adj$CHECK2=="TRUE")]
+
+
+################# M_ALL ADDING NSY/NALL AND X, X.1########################?
+
+pvalue<-Pv_th
+#PVALUE:0.01
+
+M_ALL$N.SY.N.ALL<-M_ALL$Num_Syncr_occ/M_ALL$Number_data
+
+############################DEP AND INDEP ###############################
+#M_ALL$X : 2 if dependent 1 if independent
+
+for( i in 1:nrow(M_ALL))
+{
+  if( M_ALL$Number_data[i]<20){M_ALL$X[i]<-NA}
+  else{ if(M_ALL$KendalT.p.value[i]<=pvalue){M_ALL$X[i]<-2} else{M_ALL$X[i]<-1}
+  }
+}
+
+############################# ASY PART #################################
+#Selection of Async data with more than 20 data and pvalue 0.01 #
+#M_ALL$X.1 : 2 if ASY-dependent 1 if ASY-independent
+
+for( i in 1:nrow(M_ALL))
+{
+  if( M_ALL$Num_Asyncr_occ[i]<20){M_ALL$X.1[i]<-NA}
+  else{ if(M_ALL$KT_pvalue_Asy[i]<=pvalue){M_ALL$X.1[i]<-2} else{M_ALL$X.1[i]<-1}
+  }
+}
+
+
+######## Merge part #######################?
+
+M_ALL_perc <- merge(M_ALL, Diff2, by.x = "CODE", by.y = "N_couple") 
 
 
 ############# FOR FALSE DISCOVERY RATE ADJUSTED PVALUE ####################
@@ -239,12 +241,13 @@ print(paste0("pvalue selected for Bonferroni is:",Pv_th))
 
 ############# FOR FIXED PVALUE ####################
 
+
 print(paste0("BE CAREFUL: The pvalue selected is:",pvalue))
 
 ########### FOR DEPENDENT AND INDEPENDENT ##########################?
 #Save possibility
 
-
+pvalue<-0.01
 ###### ATTENTION: NAME OF VARIABLE ARE FOR 0.01 
 
 M_ALL_0.01<- M_ALL[M_ALL$KendalT.p.value<=pvalue,]
