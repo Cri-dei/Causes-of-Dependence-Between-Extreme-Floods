@@ -6,7 +6,8 @@
 #3) Select just the couples with 20 data in commmon
 #3) create m_dep perc and m_ind perc
 #4) Save M_all for each Lag time selected
-# Added Bonferroni adjustment
+#5) Added Bonferroni adjustment for ALL Dep- Ind
+#6) Added Bonferroni adjustment for Asynchrony part
 
 library(plotly)
 library(gridExtra)
@@ -148,6 +149,8 @@ Diff2<-data.frame(Diff2)
 
 ######## FOR BONFERRONI Adjustment ###########################
 
+# For All couples #
+
 ############### Bonferroni - False Discovery Rate ############################
 
 
@@ -179,7 +182,7 @@ Code_stat_ok<-  M_ALL_adj$CODE[which(M_ALL_adj$CHECK2=="TRUE")]
 ################# M_ALL ADDING NSY/NALL AND X, X.1########################?
 
 pvalue<-Pv_th
-#PVALUE:0.01
+
 
 M_ALL$N.SY.N.ALL<-M_ALL$Num_Syncr_occ/M_ALL$Number_data
 
@@ -190,17 +193,6 @@ for( i in 1:nrow(M_ALL))
 {
   if( M_ALL$Number_data[i]<20){M_ALL$X[i]<-NA}
   else{ if(M_ALL$KendalT.p.value[i]<=pvalue){M_ALL$X[i]<-2} else{M_ALL$X[i]<-1}
-  }
-}
-
-############################# ASY PART #################################
-#Selection of Async data with more than 20 data and pvalue 0.01 #
-#M_ALL$X.1 : 2 if ASY-dependent 1 if ASY-independent
-
-for( i in 1:nrow(M_ALL))
-{
-  if( M_ALL$Num_Asyncr_occ[i]<20){M_ALL$X.1[i]<-NA}
-  else{ if(M_ALL$KT_pvalue_Asy[i]<=pvalue){M_ALL$X.1[i]<-2} else{M_ALL$X.1[i]<-1}
   }
 }
 
@@ -221,6 +213,63 @@ M_ALL_DEP_POS_perc<-M_ALL_DEP_perc[M_ALL_DEP_perc$KendalT.value>0,]
 
 M_ALL_IND<- M_ALL[-which(M_ALL$CODE%in%Code_stat_ok),]
 M_ALL_IND_perc<- M_ALL_perc[-which(M_ALL_perc$CODE%in%Code_stat_ok),]
+
+
+
+############################# ASY PART #################################
+
+## Bonferroni Adjustment for Asyncrony part #
+
+### BONFERRONI ADJUSTMENT ######################
+
+M_ALL_Asy20<-M_ALL_DEP[which(M_ALL_DEP$Num_Asyncr_occ>=20),]
+
+M_ALLch_asy<-M_ALL_Asy20[order(M_ALL_Asy20$KT_pvalue_Asy,decreasing=FALSE),]
+
+M_ALLch_asy$Num<-seq(1,nrow(M_ALLch_asy),1)
+
+M_ALLch_asy$Bonpv<-0.05*M_ALLch_asy$Num/nrow(M_ALLch_asy)
+
+M_ALLch_asy$CHECK<- M_ALLch_asy$KT_pvalue_Asy<=M_ALLch_asy$Bonpv
+
+length(which(M_ALLch_asy$CHECK=="TRUE"))
+
+ok<-which(M_ALLch_asy$CHECK=="TRUE")
+
+Pv_Asy_th<-M_ALLch_asy$KT_pvalue_Asy[ok[length(ok)]] 
+
+
+# ############################# ASY PART #################################
+# #Selection of Async data with more than 20 data and pvalue 0.01 #
+# # 
+
+for( i in 1:nrow(M_ALL_DEP))
+{
+  if(M_ALL_DEP$Num_Asyncr_occ[i]<20){M_ALL_DEP$X.1[i]<-NA}
+  else{ if(M_ALL_DEP$KT_pvalue_Asy[i]<=Pv_Asy_th){M_ALL_DEP$X.1[i]<-2} else{M_ALL_DEP$X.1[i]<-1}
+  }
+}
+
+for( i in 1:nrow(M_ALL_DEP_perc))
+{
+  if(M_ALL_DEP_perc$Num_Asyncr_occ[i]<20){M_ALL_DEP_perc$X.1[i]<-NA}
+  else{ if(M_ALL_DEP_perc$KT_pvalue_Asy[i]<=Pv_Asy_th){M_ALL_DEP_perc$X.1[i]<-2} else{M_ALL_DEP_perc$X.1[i]<-1}
+  }
+}
+
+for( i in 1:nrow(M_ALL_DEP_POS))
+{
+  if(M_ALL_DEP_POS$Num_Asyncr_occ[i]<20){M_ALL_DEP_POS$X.1[i]<-NA}
+  else{ if(M_ALL_DEP_POS$KT_pvalue_Asy[i]<=Pv_Asy_th){M_ALL_DEP_POS$X.1[i]<-2} else{M_ALL_DEP_POS$X.1[i]<-1}
+  }
+}
+
+for( i in 1:nrow(M_ALL_DEP_POS_perc))
+{
+  if(M_ALL_DEP_POS_perc$Num_Asyncr_occ[i]<20){M_ALL_DEP_POS_perc$X.1[i]<-NA}
+  else{ if(M_ALL_DEP_POS_perc$KT_pvalue_Asy[i]<=Pv_Asy_th){M_ALL_DEP_POS_perc$X.1[i]<-2} else{M_ALL_DEP_POS_perc$X.1[i]<-1}
+  }
+}
 
 
 #########SAVE ALL DATAFRAME ############################
