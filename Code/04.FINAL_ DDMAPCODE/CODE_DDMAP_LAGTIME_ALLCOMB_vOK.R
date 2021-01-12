@@ -92,19 +92,28 @@ load(file=paste0("M_ALLbonf_IND_perc_LAG_",Lag_time,".RData"))
 
 pvalue<- Pv_th
 
+#################### BONFERRONI initial matrix ###############
+
+M_ALL_0.01_POS_perc<-M_ALL_DEP_perc
+
+M_ALL_IND_perc0.01<-M_ALL_IND_perc
+
+
+
 ####THE PVALUE IS CHOOSEN IN THE PREVIOUS CODE ############
 ################## CODE FOR PVALUE= 0.01 ################################
 
 print( paste("The pvalue selected is",pvalue))
+
 ##################################
 ############################# CHANGING THRESHOLD PVALUE #################################
-#Selection as dependent couples with pvalue:0.015
-
-for( i in 1:nrow(M_ALL_0.01_POS_perc))
-{
-  if(M_ALL_0.01_POS_perc$KendalT.p.value[i]<=pvalue){M_ALL_0.01_POS_perc$X[i]<-2}
-  else{M_ALL_0.01_POS_perc$X[i]<-1}
-}
+# #Selection as dependent couples with pvalue:0.015
+# 
+# for( i in 1:nrow(M_ALL_0.01_POS_perc))
+# {
+#   if(M_ALL_0.01_POS_perc$KendalT.p.value[i]<=pvalue){M_ALL_0.01_POS_perc$X[i]<-2}
+#   else{M_ALL_0.01_POS_perc$X[i]<-1}
+# }
 
 
 ############################# ASY PART #################################
