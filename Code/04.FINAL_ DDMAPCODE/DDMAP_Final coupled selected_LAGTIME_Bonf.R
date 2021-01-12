@@ -11,6 +11,8 @@
 # Taking into account all possible combination for Hydro index######
 # DDMAP, 3D plot and BOXPLOT#
 
+#Added: Bonferroni for Asynchrony part #
+
 #Clear all before___ Be cautious!!!!!#####
 rm(list = ls())
 
@@ -82,10 +84,6 @@ load(file=paste0("M_ALLbonf_IND_perc_LAG_",Lag_time,".RData"))
 
 setwd(paste0(path,"/Lag time/Lagtime_",Lag_time,"/Plot_Bonf"))
 
-
-
-
-
 ####THE PVALUE IS CHOOSEN IN THE PREVIOUS CODE ############
 ################## CODE FOR PVALUE= 0.01 ################################
 
@@ -129,7 +127,7 @@ print( paste("The pvalue selected is",Pv_th))
 #   }
 # }
 
-
+#BONFERRONI ADJUSTMENT ######################
 
 M_ALL_DEP_Asy20<-M_ALL_DEP[which(M_ALL_DEP$Num_Asyncr_occ>=20),]
 
@@ -162,11 +160,6 @@ M_ALL_IND_perc0.01<-M_ALL_IND_perc
   else{ if(M_ALL_0.01_POS_perc$KT_pvalue_Asy[i]<=Pv_Asy_th){M_ALL_0.01_POS_perc$X.1[i]<-2} else{M_ALL_0.01_POS_perc$X.1[i]<-1}
   }
  }
-
-
-
-
-
 
 
 M_ALL_0.01_POS_perc$Class[M_ALL_0.01_POS_perc$N.SY.N.ALL>=0.60]<-"High Syn"
