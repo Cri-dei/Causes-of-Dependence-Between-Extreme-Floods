@@ -240,7 +240,7 @@ Pv_Asy_th<-M_ALLch_asy$KT_pvalue_Asy[ok[length(ok)]]
 
 
 # ############################# ASY PART #################################
-# #Selection of Async data with more than 20 data and pvalue 0.01 #
+# #Selection of Async data with more than 20 data and pvalue Bonferroni with ASY #
 # # 
 
 for( i in 1:nrow(M_ALL_DEP))
