@@ -46,8 +46,20 @@ Lag_time<-5
 #######################################################################
 #Load Workspace
 
-#setwd(paste0("C:/Users/39349/Documents/Regional/Lag time/Lagtime_",Lag_time,"/Workspace"))
-setwd(paste0("C:/Users/user/Desktop/REGIONAL-QQ/Lagtime_",Lag_time,"/Workspace"))
+##Choose directory
+
+#pc ufficio
+#setwd("D:/PROJECTS/Regional/DISTANCE_selection/Data")
+path<-c("C:/PROJECTS 2021/QQ")
+#pc portatile
+#path<-c("C:/Users/39349/Documents/Regional")
+
+################################################################
+#### Load workspace pvalue=0.01 ##################
+################################################################
+
+setwd(paste0(path,"/Lag time/Lagtime_",Lag_time,"/Workspace"))
+
 
 #Workspace needed:
 #01)M_ALL_perc_LAG_%% -> ALL M_ALL and M_ALL_perc
@@ -59,6 +71,26 @@ load("Pvalue.RData")
 load(file=paste0("M_ALL_perc_LAG_",Lag_time,".RData"))
 load(file=paste0("M_ALL_IND_perc_",pvalue,"_LAG_",Lag_time,".RData"))
 load(file=paste0("M_ALL_",pvalue,"_perc_LAG_",Lag_time,".RData"))
+
+################################################################
+#### Load workspace pvalue Bonferroni adjusted ##################
+################################################################
+
+
+setwd(paste0(path,"/Lag time/Lagtime_",Lag_time,"/Workspace_Bonf"))
+load(paste0("M_ALLbonf_perc_LAG_",Lag_time,".RData"))
+
+
+############# Load all the data ##########################
+
+
+load("Pvalue.RData")
+
+load(file=paste0("M_ALLbonf_perc_LAG_",Lag_time,".RData"))
+load(file=paste0("M_ALLbonf_DEP_perc_LAG_",Lag_time,".RData"))
+load(file=paste0("M_ALLbonf_IND_perc_LAG_",Lag_time,".RData"))
+
+pvalue<- Pv_th
 
 ####THE PVALUE IS CHOOSEN IN THE PREVIOUS CODE ############
 ################## CODE FOR PVALUE= 0.01 ################################
@@ -146,7 +178,7 @@ pdf(file=paste0("50ALTIT_MIN_hh3",pvalue,"_Lagtime_",Lag_time,".pdf"),width=9, h
 
 xxx<-1
 
-#Predictors<-c("Arable.horticultural", "Grassland", "Mountain.heath.bog","Urban.extent","ASPBAR..Â..",         
+#Predictors<-c("Arable.horticultural", "Grassland", "Mountain.heath.bog","Urban.extent","ASPBAR..?..",         
 #              "DPSBAR..m.km.","LDP..km.","Catchment.area","Maximum.altitude","Max.Min.Altitude","Min.Altitude")
 
 Predictors<-c("Arable.horticultural", "Grassland", "Mountain.heath.bog","Urban.extent",         
