@@ -131,8 +131,8 @@ for (xx in 1:nrow(Couples_investigate))
 
   # Quantile of the two stations
   
-  Thereshold_1 <-c(quantile(Stat_1_adj$Discharge_1, pTH, na.rm="TRUE"))
-  Thereshold_2 <-c(quantile(Stat_2_adj$Discharge_2, pTH, na.rm="TRUE"))
+  Thereshold_1 <-c(quantile(Station_1$Discharge_1, pTH, na.rm="TRUE"))
+  Thereshold_2 <-c(quantile(Station_1$Discharge_2, pTH, na.rm="TRUE"))
   
   ##########################################################################  
   
@@ -148,7 +148,7 @@ for (xx in 1:nrow(Couples_investigate))
   
       source(paste0(path,"/Code/Functions/","Event_selection.R"))
       
-      Thereshold_1 <-c(quantile(Stat_1_adj$Discharge_1, pTH, na.rm="TRUE")) 
+      Thereshold_1 <-c(quantile(Station_1$Discharge_1, pTH, na.rm="TRUE")) 
       
       Stat_1_adj$Disc_1_POT<- ifelse( Stat_1_adj$Discharge_1 -Thereshold_1>0,
                                       Stat_1_adj$Discharge_1 -Thereshold_1,0) 
@@ -161,7 +161,7 @@ for (xx in 1:nrow(Couples_investigate))
       #Calculate flood event for Station 2 of couple
       
       
-      Thereshold_2 <-c(quantile(Stat_2_adj$Discharge_2, pTH, na.rm="TRUE")) 
+      Thereshold_2 <-c(quantile(Station_2$Discharge_2, pTH, na.rm="TRUE")) 
       
       Stat_2_adj$Disc_2_POT<- ifelse( Stat_2_adj$Discharge_2 -Thereshold_2>0,
                                       Stat_2_adj$Discharge_2 -Thereshold_2,0)
@@ -333,7 +333,8 @@ setwd(paste0(path,"/Results/POT_Daily"))
 
 write.table(POT_matrix,paste0("VMAX_DEPDEP_POT_",pTH,"_lag",lag_time,".csv"), row.names=F, col.names=T)
 #write.table(POT_matrix,paste0("ALLDEP_POT_lag",lag_time,".csv"), row.names=F, col.names=T)      
-      
+
+save.image(paste0("VMAX_DEPDEP_POT_",pTH,"_lag",lag_time,".RData"))      
       
       
       
