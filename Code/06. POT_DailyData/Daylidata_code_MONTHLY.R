@@ -182,10 +182,13 @@ for (xx in 1:nrow(Couples_investigate))
       Event_selection_1$Data_Qpeak<- as.Date(Stat_1_adj$Data_1[Event_selection_1$Max_Event],"%Y-%m-%d")
       Event_selection_1$Discharge_1<-Stat_1_adj$Discharge_1[Event_selection_1$Max_Event]
       Event_selection_1$Month<-Stat_1_adj$Month[Event_selection_1$Max_Event]
+      Event_selection_1$Year<-Stat_1_adj$Year[Event_selection_1$Max_Event]
 
       Event_selection_2$Data_Qpeak<- as.Date(Stat_2_adj$Data_2[Event_selection_2$Max_Event],"%Y-%m-%d")      
       Event_selection_2$Discharge_2<-Stat_2_adj$Discharge_2[Event_selection_2$Max_Event]      
       Event_selection_2$Month<-Stat_2_adj$Month[Event_selection_2$Max_Event]
+      Event_selection_2$Year<-Stat_2_adj$Year[Event_selection_2$Max_Event]
+      
       
     #1. Scenario
       
@@ -196,10 +199,45 @@ for (xx in 1:nrow(Couples_investigate))
     lag_time<-3
       
     
+#########POT ON MONTHLY MAX ################
+    
+    Dep_12M<- as.data.frame(matrix(, nrow = nrow(Event_selection_1), ncol = 5))
+    
+    
+    colnames(Dep_12M)=c("Qpeak_1","Data_Peak_1","Year","Month","Peak_2")
+    
+    Dep_12M[,1:2]<-Event_selection_1[,c(1,9)]
+    
+    for (ii in 1:nrow(Event_selection_1))
+    { 
+     
+      
+      Dep_12M$Year[ii]<-Event_selection_1$Year[ii] 
+      Dep_12M$Month[ii]<- Event_selection_1$Month[ii] 
+        
+      pos_m<- which(Event_selection_2$Year== Event_selection_1$Year[ii] & Event_selection_2$Month==Event_selection_1$Month[ii])
+     
+      if(length(pos_m)>0){
+        
+      Dep_12M$Peak_2[ii]<-max( Event_selection_2$Qpeak[pos_m])
+      
+      pos_max2<- which.is.max(Event_selection_2$Qpeak[pos_m])
+      
+      Dep_12M$Data_Peak_2[ii]<- format(as.Date(Event_selection_2$Data_Qpeak[ii],"%Y-%m-%d"),"%Y-%m-%d")
+    
+      } else{
+        Dep_12M$Data_Peak_2[ii]<-NA
+      }
+      
+      
+    }
+##### EVENT BASED ##########
+    
     #Dependence matrix : St2|St1
     
       Dep_12<- as.data.frame(matrix(, nrow = nrow(Event_selection_1), ncol = 8))
       
+
 
       colnames(Dep_12)=c("Qpeak_1","Data_Peak_1","Pos_ST2","Data_ST2","lag0","Q_lag0","lag_3","Q_lag3")
       
