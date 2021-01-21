@@ -51,7 +51,7 @@ Available_st<-read.table("Elencofile.txt")
 
 ## Choose quantile for POT ##
 
-pTH<-0.99
+pTH<-0.95
 
 DEpdep<-M_ALL_DEP_POS_perc[which(M_ALL_DEP_POS_perc$X.1==2),]
 
@@ -201,180 +201,116 @@ for (xx in 1:nrow(Couples_investigate))
     
 #########POT ON MONTHLY MAX ################
     
-    Dep_12M<- as.data.frame(matrix(, nrow = nrow(Event_selection_1), ncol = 5))
+    #Extract Max monthly st2|st1
     
+    Dep_12M<- as.data.frame(matrix(, nrow = nrow(Event_selection_1), ncol = 4))
+    #colnames(Dep_12M)=c("QPeak_1","Data_Peak_1","Year","Month","QPeak_2")
+    colnames(Dep_12M)=c("QPeak_1","Year","Month","QPeak_2")
     
-    colnames(Dep_12M)=c("Qpeak_1","Data_Peak_1","Year","Month","Peak_2")
+    Years_event1<-unique(Event_selection_1$Year)
     
-    Dep_12M[,1:2]<-Event_selection_1[,c(1,9)]
+    xxx<-1      
     
-    for (ii in 1:nrow(Event_selection_1))
-    { 
-     
-      
-      Dep_12M$Year[ii]<-Event_selection_1$Year[ii] 
-      Dep_12M$Month[ii]<- Event_selection_1$Month[ii] 
+    for (selYear in Years_event1)
+    {
+    
+    for ( month in 1:12)
+    {
+      ST1<-which(Event_selection_1$Year==selYear & Event_selection_1$Month== month)
+      ST2<-which(Event_selection_2$Year==selYear & Event_selection_2$Month== month)
+
+      if(length(ST1)>0 && length(ST2)>0)
+      {
         
-      pos_m<- which(Event_selection_2$Year== Event_selection_1$Year[ii] & Event_selection_2$Month==Event_selection_1$Month[ii])
-     
-      if(length(pos_m)>0){
+        Dep_12M$QPeak_1[xxx]<-max(Event_selection_1$Qpeak[ST1])
         
-      Dep_12M$Peak_2[ii]<-max( Event_selection_2$Qpeak[pos_m])
-      
-      pos_max2<- which.is.max(Event_selection_2$Qpeak[pos_m])
-      
-      Dep_12M$Data_Peak_2[ii]<- format(as.Date(Event_selection_2$Data_Qpeak[ii],"%Y-%m-%d"),"%Y-%m-%d")
-    
-      } else{
-        Dep_12M$Data_Peak_2[ii]<-NA
-      }
-      
+        Dep_12M$QPeak_2[xxx]<-max(Event_selection_2$Qpeak[ST2])
+        
+        Dep_12M$Year[xxx]<-selYear
+        
+        Dep_12M$Month[xxx]<-month
+        
+        xxx<-xxx+1 }
       
     }
-##### EVENT BASED ##########
+    }
     
-    #Dependence matrix : St2|St1
+    Dep_12M<-na.omit(Dep_12M)
     
-      Dep_12<- as.data.frame(matrix(, nrow = nrow(Event_selection_1), ncol = 8))
-      
-
-
-      colnames(Dep_12)=c("Qpeak_1","Data_Peak_1","Pos_ST2","Data_ST2","lag0","Q_lag0","lag_3","Q_lag3")
-      
-        
-      for (ii in 1:nrow(Event_selection_1))
-           { 
-        
-            Dep_12$Qpeak_1[ii]<-Event_selection_1$Discharge_1[ii]
-            
-            Dep_12$Data_Peak_1[ii]<- Event_selection_1$Data_Qpeak[ii]
-          
-             pos_r<- which(Stat_2_adj$Data_2== Event_selection_1$Data_Qpeak[ii])
-             
-             Dep_12$Pos_ST2[ii]<-pos_r
-             Dep_12$Data_ST2[ii]<-Stat_2_adj$Data_2[pos_r]
-             
-             in_p<- ifelse(pos_r-lag_time<=0,1,pos_r-lag_time)
- 
-             fin_p<-pos_r+lag_time
-             lag0<- Stat_2_adj$Disc_2_POT[pos_r]>0
-             
-             Dep_12$lag0[ii]<- lag0
-             
-             #Lag time 0 there is a pot also in the station 2?
-             
-             if(lag0==FALSE || is.na(lag0)){
-               
-               Dep_12$lag_3[ii]<- any( Stat_2_adj$Disc_2_POT[in_p:fin_p]>0)
-               
-               #if no check lagtime +-3 there is a ST2_pot?
-               
-               if(Dep_12$lag_3[ii]==FALSE || is.na(Dep_12$lag_3[ii])) 
-               {
-                 Dep_12$Q_lag3[ii]<-Stat_2_adj$Discharge_2[pos_r] }else if( Dep_12$lag_3[ii]==TRUE )
-                 
-                   {
-                   Dep_12$Q_lag3[ii]<- max(Stat_2_adj$Discharge_2[in_p:fin_p])
-                   
-                 }
+    #Extract Max monthly st1|st2
+    # 
+    # Dep_21M<- as.data.frame(matrix(, nrow = nrow(Event_selection_1), ncol = 5))
+    # colnames(Dep_21M)=c("Qpeak_2","Data_Peak_2","Year","Month","QPeak_1")
+    # colnames(Dep_12M)=c("QPeak_1","Year","Month","QPeak_2")
+    # 
+    # Years_event2<-unique(Event_selection_2$Year)
+    # 
+    # xxx<-1      
+    # 
+    # for (selYear in Years_event2)
+    # {
+    #   
+    #   for ( month in 1:12)
+    #   {
+    #     ST1<-which(Event_selection_1$Year==selYear & Event_selection_1$Month== month)
+    #     ST2<-which(Event_selection_2$Year==selYear & Event_selection_2$Month== month)
+    #     
+    #     if(length(ST1)>0 && length(ST2)>0)
+    #     {
+    #       
+    #       Dep_21M$QPeak_1[xxx]<-max(Event_selection_1$QPeak[ST1])
+    #       
+    #       Dep_21M$QPeak_2[xxx]<-max(Event_selection_2$QPeak[ST2])
+    #       
+    #       Dep_21M$Year[xxx]<-selYear
+    #       
+    #       Dep_21M$Month[xxx]<-month
+    #       
+    #       xxx<-xxx+1 }
+    #     
+    #   }
+    # }
+    # 
+    # Dep_21M<-na.omit(Dep_21M)
     
-             }else if(lag0==TRUE){
-               
-               Dep_12$Q_lag0[ii]<-Stat_2_adj$Discharge_2[pos_r]
-               
-               Dep_12$lag_3[ii]<- any( Stat_2_adj$Disc_2_POT[in_p:fin_p]>0)
-               
-               #OLD VERSION
-               Dep_12$Q_lag3[ii]<- max(Stat_2_adj$Discharge_2[in_p:fin_p])
-               
-               #New
-               #Dep_12$Q_lag3[ii]<-Dep_12$Q_lag0[ii]
-               
-                }
-             }
-      
-      
-      #Dependence matrix : St1|St2
-      
-      Dep_21<- as.data.frame(matrix(, nrow = nrow(Event_selection_2), ncol = 8))
-      #Dep_21<- matrix(, nrow = nrow(Event_selection_2), ncol = 8)
-      
-      colnames(Dep_21)=c("Qpeak_2","Data_Peak_2","Pos_ST1","Data_ST1","lag0","Q_lag0","lag_3","Q_lag3")
-      
-      
-      for (ii in 1:nrow(Event_selection_2))
-      { 
-        
-        Dep_21$Qpeak_2[ii]<-Event_selection_2$Discharge_2[ii]
-        
-        Dep_21$Data_Peak_2[ii]<-Event_selection_2$Data_Qpeak[ii]
-        
-        pos_r<- which(Stat_1_adj$Data_1== Event_selection_2$Data_Qpeak[ii])
-        
-        Dep_21$Pos_ST1[ii]<-pos_r
-        Dep_21$Data_ST1[ii]<-Stat_1_adj$Data_1[pos_r]
-        
-        in_p<- ifelse(pos_r-lag_time<=0,1,pos_r-lag_time)
-        
-        fin_p<-pos_r+lag_time
-        lag0<- Stat_1_adj$Disc_1_POT[pos_r]>0
-        
-        Dep_21$lag0[ii]<- lag0
-        
-        if(lag0==FALSE || is.na(lag0)){
-          
-          Dep_21$lag_3[ii]<- any( Stat_1_adj$Disc_1_POT[in_p:fin_p]>0)
-          
-
-          if(Dep_21$lag_3[ii]==FALSE || is.na(Dep_21$lag_3[ii]))
-          {
-            Dep_21$Q_lag3[ii]<- Stat_1_adj$Discharge_1[pos_r] }else if(Dep_21$lag_3[ii]==TRUE){
-            
-            Dep_21$Q_lag3[ii]<- max(Stat_1_adj$Discharge_1[in_p:fin_p])
-            
-            }
-   
-        }else if(lag0==TRUE){
-          
-          Dep_21$Q_lag0[ii]<-Stat_1_adj$Disc_1_POT[pos_r]
-          Dep_21$lag_3[ii]<- any( Stat_1_adj$Disc_1_POT[in_p:fin_p]>0)
-          
-          #old
-          Dep_21$Q_lag3[ii]<- max(Stat_1_adj$Discharge_1[in_p:fin_p])
-          
-          #new
-          #Dep_21$Q_lag3[ii]<- Dep_21$Q_lag0[ii]
-          
-        }
-      }
-      
+    
+    
+    List_couple[[xx]]<- list(Event_selection_1,Event_selection_2,Dep_12M)
+    names(List_couple)[[xx]]<-Couples_investigate$CODE[xx]
+    names(List_couple[[xx]])[1]<-Couples_investigate$ID_Station_1[xx]
+    names(List_couple[[xx]])[[2]]<-Couples_investigate$ID_Station_2[xx]
+    
+    
+    
       ################## Randomization ##############################################
       
       source(paste0(path,"/Code/Functions/","Randomization.R"))
       
-      
-      Dep_12_Discharge<-Dep_12[,c("Qpeak_1","Q_lag3")]
-      Dep_21_Discharge<-Dep_21[,c("Qpeak_2","Q_lag3")]
+    
+      Dep_12_Discharge<-Dep_12M[,c("QPeak_1","QPeak_2")]
       
       Dep_12_Disc_R<-Randomization(Dep_12_Discharge,0.1)
-      Dep_21_Disc_R<-Randomization(Dep_21_Discharge,0.1)
       
-      KT.test_12 <- cor.test(Dep_12_Disc_R[,1],Dep_12_Disc_R[,2],method="kendall") 
-      KT.test_21 <- cor.test(Dep_21_Disc_R[,1],Dep_21_Disc_R[,2],method="kendall") 
+      if(nrow(Dep_12_Disc_R)>=20)
+      {
+        KT.test_12 <- cor.test(Dep_12_Disc_R[,1],Dep_12_Disc_R[,2],method="kendall") 
+        
+        POT_matrix$POT_KT_12[xx]<- KT.test_12$estimate
+        POT_matrix$POT_pvalue_12[xx]<- KT.test_12$p.value 
+        
+        
+      }
       
+    
       
-      POT_matrix$POT_KT_12[xx]<- KT.test_12$estimate
-      POT_matrix$POT_pvalue_12[xx]<- KT.test_12$p.value 
-      
-      POT_matrix$POT_KT_21[xx]<- KT.test_21$estimate
-      POT_matrix$POT_pvalue_21[xx]<- KT.test_21$p.value     
-      
-  } }  
+       } }  
 }
 
-setwd(paste0(path,"/Results/POT_Daily"))
+setwd(paste0(path,"/Results/POT_Daily/Max_Monthly_1"))
 
-write.table(POT_matrix,paste0("VMAX_DEPDEP_POT_",pTH,"_lag",lag_time,".csv"), row.names=F, col.names=T)
+save.image(paste0("MMAX_DEPDEP_POT_",pTH,"_lag",lag_time,".RData"))
+
+write.table(POT_matrix,paste0("MMAX_DEPDEP_POT_",pTH,"_lag",lag_time,".csv"), row.names=F, col.names=T)
 #write.table(POT_matrix,paste0("ALLDEP_POT_lag",lag_time,".csv"), row.names=F, col.names=T)      
       
       
