@@ -51,7 +51,7 @@ Available_st<-read.table("Elencofile.txt")
 
 ## Choose quantile for POT ##
 
-pTH<-0.99
+pTH<-0.95
 
 DEpdep<-M_ALL_DEP_POS_perc[which(M_ALL_DEP_POS_perc$X.1==2),]
 
