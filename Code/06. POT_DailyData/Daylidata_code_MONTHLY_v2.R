@@ -43,7 +43,7 @@ load(paste0("M_ALLbonf_DEP_perc_LAG_",Lag_time,".RData"))
 
 #Import Daily Flow Datas
 
-setwd(paste0(path,"/Data/DAILYFLOWDATA"))
+#setwd(paste0(path,"/Data/DAILYFLOWDATA"))
 
 Available_st<-read.table("Elencofile.txt")
 
