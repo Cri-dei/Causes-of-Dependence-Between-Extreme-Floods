@@ -50,7 +50,8 @@ Lag_time<-5
 
 #pc ufficio
 #setwd("D:/PROJECTS/Regional/DISTANCE_selection/Data")
-path<-c("C:/PROJECTS 2021/QQ")
+#path<-c("C:/PROJECTS 2021/QQ")
+path<-c("C:/PROJECTS 2021/QQ/Results/POT_max")
 #pc portatile
 #path<-c("C:/Users/39349/Documents/Regional")
 
@@ -58,7 +59,8 @@ path<-c("C:/PROJECTS 2021/QQ")
 #### Load workspace pvalue=0.01 ##################
 ################################################################
 
-setwd(paste0(path,"/Lag time/Lagtime_",Lag_time,"/Workspace"))
+#setwd(paste0(path,"/Lag time/Lagtime_",Lag_time,"/Workspace"))
+#setwd(paste0(path,"/Results/POT_max"))
 
 
 #Workspace needed:
@@ -154,7 +156,7 @@ M_ALL_IND_perc<-M_ALL_IND_perc0.01
 Density_perc<-data.frame(matrix(,nrow=1006,ncol=10))
 colnames(Density_perc)<-c("CODE","Selected","DEP_MeteoHydro","DEP_MeteoClima","DEP_ClimaHydro","DEP_3Ind","IND_MeteoHydro","IND_MeteoClima","IND_ClimaHydro","IND_3Ind")
 
-setwd(paste0(path,"/Lag time/Lagtime_",Lag_time,"/Plot_bonf"))
+#setwd(paste0(path,"/Lag time/Lagtime_",Lag_time,"/Plot_bonf"))
 
 
 pdf(file=paste0("DDMAP_",Lag_time,".pdf"),width=9, height=9)  
@@ -176,10 +178,11 @@ v1<-Predictors
  
 for(hh in 4:6){
 
-#  hh<-6
+  
+    #hh<-6
 
   k<-combinations(length(Predictors), hh, v=v1, set=TRUE, repeats.allowed=FALSE)
-    ff<-1
+    #ff<-1
 for(ff in 1:nrow(k)){
     
 #for(ff in c(3,5,6,7)){
@@ -699,13 +702,13 @@ for(ff in 1:nrow(k)){
             names=c("DepDep","Depind","High Syn"), main="Distance Groups")
     
     boxplot(M1_DEP$Meteo,M1_IND$Meteo
-            ,names=c("Dependent","Independent"), main="ALL: Meteo")
+            ,names=c("Dependent","Independent"), main="ALL: Meteo",outline=FALSE)
     
     boxplot(M1_DEP$Climatology,M1_IND$Climatology
-            ,names=c("Dependent","Independent"), main="ALL: Climatology")
+            ,names=c("Dependent","Independent"), main="ALL: Climatology",outline=FALSE)
     
     boxplot(M1_DEP$Hydrology,M1_IND$Hydrology
-            ,names=c("Dependent","Independent"), main="ALL: Hydrology")
+            ,names=c("Dependent","Independent"), main="ALL: Hydrology",outline=FALSE)
     
     xxx<-xxx+1
   }
