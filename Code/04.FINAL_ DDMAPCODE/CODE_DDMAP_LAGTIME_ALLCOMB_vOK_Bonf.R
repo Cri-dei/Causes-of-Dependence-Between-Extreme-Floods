@@ -169,8 +169,11 @@ xxx<-1
 # Predictors<-c("Arable.horticultural", "Grassland", "Mountain.heath.bog","Urban.extent",         
 #               "DPSBAR..m.km.","LDP..km.")
 
-Predictors<-c("Catchment.area", "BFIHOST...." , "QMED",   
-              "DPSBAR..m.km.","LDP..km.","SPRHOST","Maximum.altitude")
+#Predictors<-c("Catchment.area", "BFIHOST...." , "QMED",   
+ #             "DPSBAR..m.km.","LDP..km.","SPRHOST","Maximum.altitude")
+
+Predictors<-c("Arable.horticultural","Grassland","Urban.extent"   ,"Maximum.altitude")
+
 
 
 #v1<- match(Predictors,colnames(M_ALL_0.01_POS_perc))
