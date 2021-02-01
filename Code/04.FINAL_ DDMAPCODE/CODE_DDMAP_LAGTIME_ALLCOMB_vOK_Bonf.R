@@ -52,6 +52,8 @@ Lag_time<-5
 #setwd("D:/PROJECTS/Regional/DISTANCE_selection/Data")
 #path<-c("C:/PROJECTS 2021/QQ")
 path<-c("C:/PROJECTS 2021/QQ/Results/POT_max")
+
+setwd("C:/PROJECTS 2021/QQ/Results/POT_max")
 #pc portatile
 #path<-c("C:/Users/39349/Documents/Regional")
 
@@ -60,7 +62,7 @@ path<-c("C:/PROJECTS 2021/QQ/Results/POT_max")
 ################################################################
 
 #setwd(paste0(path,"/Lag time/Lagtime_",Lag_time,"/Workspace"))
-#setwd(paste0(path,"/Results/POT_max"))
+setwd(paste0(path,"/Results/POT_max"))
 
 
 #Workspace needed:
@@ -169,8 +171,8 @@ xxx<-1
 # Predictors<-c("Arable.horticultural", "Grassland", "Mountain.heath.bog","Urban.extent",         
 #               "DPSBAR..m.km.","LDP..km.")
 
-#Predictors<-c("Catchment.area", "BFIHOST...." , "QMED",   
- #             "DPSBAR..m.km.","LDP..km.","SPRHOST","Maximum.altitude")
+Predictors<-c("Catchment.area", "BFIHOST...." , "QMED",
+              "DPSBAR..m.km.","LDP..km.","SPRHOST","Maximum.altitude")
 
 Predictors<-c("Arable.horticultural","Grassland","Urban.extent"   ,"Maximum.altitude")
 
@@ -182,7 +184,7 @@ v1<-Predictors
 for(hh in 4:6){
 
   
-    #hh<-6
+    hh<-length(Predictors)
 
   k<-combinations(length(Predictors), hh, v=v1, set=TRUE, repeats.allowed=FALSE)
     #ff<-1
