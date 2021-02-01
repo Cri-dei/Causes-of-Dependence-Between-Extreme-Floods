@@ -33,29 +33,43 @@ SPRHOST<- data.frame(read.table("SPRHOST_coeff.csv", header = TRUE, sep=","))
 ################!  CHOOOSE LAG TIME  !##################?
 #Lag_time<-c(5,7)
 
-Lag_time<-10
+#Lag_time<-10
 Lag_time<-5
+
 ##############################################
 
-setwd(paste0(path,"/Lag time/Lagtime_",Lag_time,"/InitialData"))
-KT_M_Final_available_20_Num<-read.table("KT_M_Final_available_20_Num.csv", header = TRUE, sep=";") 
+# Old data
 
-
-print(paste("Selected lag time is:",Lag_time, "days"))
-
-M_ALL<-data.frame(KT_M_Final_available_20_Num)
-#M_ALL$Distance<-as.numeric(as.character(M_ALL$Distance))
-M_ALL$Distance<- M_ALL$Distance/1000 
-
-
+# setwd(paste0(path,"/Lag time/Lagtime_",Lag_time,"/InitialData"))
+# KT_M_Final_available_20_Num<-read.table("KT_M_Final_available_20_Num.csv", header = TRUE, sep=";") 
+#M_ALL<-data.frame(KT_M_Final_available_20_Num)
 ##NOW M_ALL it is the same of KT_M_Final_available_20data_ok ##############
 #FROM: load("C:/Users/39349/Documents/Regional/Data/Processed Data/Processed_KT_Matrix.RData")##
 ##We preferred import it from excel to have Numerical matrix##################################
 
-#Wrong Data Station
-Wrongst<- which(M_ALL$ID_Station_1=="39004" | M_ALL$ID_Station_2=="39004" )
+# #Wrong Data Station
+# Wrongst<- which(M_ALL$ID_Station_1=="39004" | M_ALL$ID_Station_2=="39004" )
+# 
+# M_ALL<- M_ALL[-Wrongst,]
+# 
+###############################################################################
 
-M_ALL<- M_ALL[-Wrongst,]
+
+# New Data
+
+
+setwd(paste0(path,"/Results/POT_max"))
+
+load("C:/PROJECTS 2021/QQ/Results/POT_max/Final_matrix_POTMAX_lag5.RData")
+
+na_pos<-which(is.na(POT_matrix$CODE))
+
+M_ALL<-POT_matrix[-na_pos,]
+
+
+M_ALL$Distance<- M_ALL$Distance/1000 
+
+print(paste("Selected lag time is:",Lag_time, "days"))
 
 
 ### CATCHMENT INFO FOR ALL THE COUPLES: DEP AND IND ##############
