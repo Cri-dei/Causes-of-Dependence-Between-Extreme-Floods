@@ -57,14 +57,23 @@ Lag_time<-5
 
 # New Data
 
-
+#Annual Max
 setwd(paste0(path,"/Results/POT_max"))
-
 load("C:/PROJECTS 2021/QQ/Results/POT_max/Final_matrix_POTMAX_lag5.RData")
+
+#POT variable month
+setwd(paste0(path,"/Results/POT_monthly_var"))
+load("Final_matrix_POTMAX_lag2.RData")
+Lag_time<-2
 
 na_pos<-which(is.na(POT_matrix$CODE))
 
-M_ALL<-POT_matrix[-na_pos,]
+if(length(na_pos)>0){
+  M_ALL<-POT_matrix[-na_pos,]
+}else{
+  M_ALL<-POT_matrix
+}
+
 
 
 M_ALL$Distance<- M_ALL$Distance/1000 
@@ -288,7 +297,7 @@ for( i in 1:nrow(M_ALL_DEP_POS_perc))
 
 #########SAVE ALL DATAFRAME ############################
 
-setwd(paste0(path,"/Lag time/Lagtime_",Lag_time,"/Workspace_Bonf"))
+#setwd(paste0(path,"/Lag time/Lagtime_",Lag_time,"/Workspace_Bonf"))
 
 save(Pv_th,file="Pvalue.RData")
 save(M_ALL,M_ALL_perc,M_ALL_adj,file=paste0("M_ALLbonf_perc_LAG_",Lag_time,".RData"))
