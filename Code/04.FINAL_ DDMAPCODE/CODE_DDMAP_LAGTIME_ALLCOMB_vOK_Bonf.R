@@ -38,7 +38,7 @@ library(scatterplot3d)
 #Load Workspace
 ################## CODE FOR PVALUE= 0.01 ################################
 
-#CHOOSE LAG TIME
+##CHOOSE LAG TIME
 #### LAG TIME #########
 
 Lag_time<-5
@@ -161,32 +161,35 @@ colnames(Density_perc)<-c("CODE","Selected","DEP_MeteoHydro","DEP_MeteoClima","D
 #setwd(paste0(path,"/Lag time/Lagtime_",Lag_time,"/Plot_bonf"))
 
 
-pdf(file=paste0("DDMAP_",Lag_time,".pdf"),width=9, height=9)  
+pdf(file=paste0("DDMAPALL_NEW_5_",Lag_time,".pdf"),width=9, height=9)  
 
 xxx<-1
 
-#Predictors<-c("Arable.horticultural", "Grassland", "Mountain.heath.bog","Urban.extent","ASPBAR..?..",         
-#              "DPSBAR..m.km.","LDP..km.","Catchment.area","Maximum.altitude","Max.Min.Altitude","Min.Altitude")
+Predictors<-c("Arable.horticultural", "Grassland", "Mountain.heath.bog","Urban.extent","ASPBAR..Â..",         
+              "DPSBAR..m.km.","LDP..km.","Catchment.area","Maximum.altitude", 
+              "BFIHOST....","QMED","SPRHOST")
 
+#,"Max.Min.Altitude"
 # Predictors<-c("Arable.horticultural", "Grassland", "Mountain.heath.bog","Urban.extent",         
 #               "DPSBAR..m.km.","LDP..km.")
 
-Predictors<-c("Catchment.area", "BFIHOST...." , "QMED",
-              "DPSBAR..m.km.","LDP..km.","SPRHOST","Maximum.altitude")
+#Predictors<-c("Catchment.area", "BFIHOST...." , "QMED",
+#              "DPSBAR..m.km.","LDP..km.","SPRHOST","Maximum.altitude")
 
-Predictors<-c("Arable.horticultural","Grassland","Urban.extent"   ,"Maximum.altitude")
+#Predictors<-c("Arable.horticultural","Grassland","Urban.extent"   ,"Maximum.altitude")
 
 
 
-#v1<- match(Predictors,colnames(M_ALL_0.01_POS_perc))
-v1<-Predictors
+v1<- match(Predictors,colnames(M_ALL_0.01_POS_perc))
+#v1<-Predictors
  
-for(hh in 4:6){
+for(hh in 4:12){
 
   
-    hh<-length(Predictors)
+    hh<-5
 
   k<-combinations(length(Predictors), hh, v=v1, set=TRUE, repeats.allowed=FALSE)
+  
     #ff<-1
 for(ff in 1:nrow(k)){
     
@@ -210,9 +213,9 @@ for(ff in 1:nrow(k)){
     final_length_depdep<-length(which(M1_DEP$X.1==2))
     final_length_depind<-length(which(M1_DEP$X.1==1))
     
-    title=print(paste0("Hydrological Indexes selected: ",k[ff,]))
+    title=print(paste0("Hydrological Indexes selected: ",colnames(M_ALL_0.01_POS_perc)[k[ff,]]))
     
-    Final_predictors<-k[ff,]
+    Final_predictors<-colnames(M_ALL_0.01_POS_perc)[k[ff,]]
     nam0<-paste(k[ff,], collapse = ' , ')
     
     ############################## DDMAP###################################################
