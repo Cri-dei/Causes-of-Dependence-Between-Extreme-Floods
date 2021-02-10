@@ -160,14 +160,14 @@ colnames(Density_perc)<-c("CODE","Selected","DEP_MeteoHydro","DEP_MeteoClima","D
 
 #setwd(paste0(path,"/Lag time/Lagtime_",Lag_time,"/Plot_bonf"))
 
+setwd("C:/PROJECTS 2021/QQ/Results/POT_max")
 
-pdf(file=paste0("DDMAPALL_NEW_5_",Lag_time,".pdf"),width=9, height=9)  
+pdf(file=paste0("try2.pdf"),width=9, height=9)  
 
 xxx<-1
 
-Predictors<-c("Arable.horticultural", "Grassland", "Mountain.heath.bog","Urban.extent","ASPBAR..Â..",         
-              "DPSBAR..m.km.","LDP..km.","Catchment.area","Maximum.altitude", 
-              "BFIHOST....","QMED","SPRHOST")
+Predictors<-c("Maximum.altitude","Arable.horticultural", "Grassland", 
+              "BFIHOST....","QMED","SPRHOST","Urban.extent", "DPSBAR..m.km.","LDP..km.")
 
 #,"Max.Min.Altitude"
 # Predictors<-c("Arable.horticultural", "Grassland", "Mountain.heath.bog","Urban.extent",         
@@ -183,10 +183,10 @@ Predictors<-c("Arable.horticultural", "Grassland", "Mountain.heath.bog","Urban.e
 v1<- match(Predictors,colnames(M_ALL_0.01_POS_perc))
 #v1<-Predictors
  
-for(hh in 4:12){
+for(hh in 4:length(v1)){
 
   
-    hh<-5
+    #hh<-5
 
   k<-combinations(length(Predictors), hh, v=v1, set=TRUE, repeats.allowed=FALSE)
   
@@ -216,7 +216,7 @@ for(ff in 1:nrow(k)){
     title=print(paste0("Hydrological Indexes selected: ",colnames(M_ALL_0.01_POS_perc)[k[ff,]]))
     
     Final_predictors<-colnames(M_ALL_0.01_POS_perc)[k[ff,]]
-    nam0<-paste(k[ff,], collapse = ' , ')
+    nam0<-paste(colnames(M_ALL_0.01_POS_perc)[k[ff,]], collapse = ' , ')
     
     ############################## DDMAP###################################################
     ######################### DEPENDENT COUPLES#######################################????
@@ -658,21 +658,21 @@ for(ff in 1:nrow(k)){
     grid.arrange(P1_DEP,P2_DEP, P3_DEP,P4_DEP,text.p, nrow=3,ncol=2,
                  top = textGrob("DEPENDENT",gp=gpar(fontsize=20,font=3)),
                  heights = c(0.7, 0.7, 0.2))
-    # Scatterplot
-    par(mfrow=c(1,1))
-    scatterplot3d(  x=dfm$Meteo, y=dfm$Hydrology, z=dfm$Climatology, 
-                         color = dfm$color, 
-                         xlim=c(0,1),
-                         ylim=c(0,1),
-                         zlim=c(0,1),
-                         xlab="Metereology", ylab="Hydrology", zlab="Climatology",
-                         cex.symbols = 2, pch = 19, angle = +120)
-    
-    
-    legend("topright",s3d$xyz.convert(18, 0, 12), pch = 19, yjust=0,
-           # here you define the labels in the legend
-               legend = c('DepDep','DepInd','High Syn'),col=c( 'darkcyan','darkred','yellow'), cex = 1)
-           
+    # # Scatterplot
+    # par(mfrow=c(1,1))
+    # scatterplot3d(  x=dfm$Meteo, y=dfm$Hydrology, z=dfm$Climatology, 
+    #                      color = dfm$color, 
+    #                      xlim=c(0,1),
+    #                      ylim=c(0,1),
+    #                      zlim=c(0,1),
+    #                      xlab="Metereology", ylab="Hydrology", zlab="Climatology",
+    #                      cex.symbols = 2, pch = 19, angle = +120)
+    # 
+    # 
+    # legend("topright",s3d$xyz.convert(18, 0, 12), pch = 19, yjust=0,
+    #        # here you define the labels in the legend
+    #            legend = c('DepDep','DepInd','High Syn'),col=c( 'darkcyan','darkred','yellow'), cex = 1)
+    #        
     par(mfrow=c(1,1))      
     
     #Independent
