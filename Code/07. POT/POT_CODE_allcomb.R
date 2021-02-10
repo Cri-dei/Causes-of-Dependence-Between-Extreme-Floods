@@ -70,8 +70,8 @@ Couples_investigate<-Allcomb
 
               ########## CHOOSE TYPE OF ANALYSIS ###############
 
-#TYPE_ANALYSIS<-"Max Annual"
-TYPE_ANALYSIS<-"Variable POT Month"
+TYPE_ANALYSIS<-"Max Annual"
+#TYPE_ANALYSIS<-"Variable POT Month"
 
 ############################# Initialize POT matrix ##################################
 
@@ -93,7 +93,7 @@ colnames(POT_matrix)<-c("CODE", "ID_Station_1",  "ID_Station_2","KendalT.value",
 
 #Lag_time selected
 
-lag_time<-2
+lag_time<-3
 
 List_couple<- vector(mode = "list", length = nrow(Couples_investigate))
 List_couple_R<- vector(mode = "list", length = nrow(Couples_investigate))
@@ -367,8 +367,11 @@ POT_matrix<-POT_matrix[-na_pos,]
 if(TYPE_ANALYSIS== "Max Annual")
   
 {
-setwd(paste0(path,"/Results/POT_max"))
+#setwd(paste0(path,"/Results/POT_max"))
+#FOR CHECKING:
 
+setwd(paste0(path,"/Results_update/Max_annual_by_POT"))  
+  
 save.image(paste0("POT_MAX_lag",lag_time,".RData"))
 save(POT_matrix,file=paste0("Final_matrix_POTMAX_lag",lag_time,".RData"))
 
