@@ -61,10 +61,10 @@ Lag_time<-5
 setwd(paste0(path,"/Results/POT_max"))
 load("C:/PROJECTS 2021/QQ/Results/POT_max/Final_matrix_POTMAX_lag5.RData")
 
-#POT variable month
-setwd(paste0(path,"/Results/POT_monthly_var"))
-load("Final_matrix_POTMAX_lag2.RData")
-Lag_time<-2
+# #POT variable month
+# setwd(paste0(path,"/Results/POT_monthly_var"))
+# load("Final_matrix_POTMAX_lag2.RData")
+# Lag_time<-5
 
 na_pos<-which(is.na(POT_matrix$CODE))
 
