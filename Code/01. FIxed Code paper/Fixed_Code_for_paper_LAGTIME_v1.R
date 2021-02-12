@@ -34,7 +34,7 @@ SPRHOST<- data.frame(read.table("SPRHOST_coeff.csv", header = TRUE, sep=","))
 #Lag_time<-c(5,7)
 
 #Lag_time<-10
-Lag_time<-5
+Lag_time<-3
 
 ##############################################
 
@@ -228,8 +228,18 @@ M_ALL_perc <- merge(M_ALL, Diff2, by.x = "CODE", by.y = "N_couple")
 ############# FOR FALSE DISCOVERY RATE ADJUSTED PVALUE ####################
 
 
+M_ALL_DEP<-M_ALL[which(M_ALL$KendalT.p.value<=pvalue),]
+
 M_ALL_DEP<- M_ALL[which(M_ALL$CODE%in%Code_stat_ok),]
+
 M_ALL_DEP_perc<-M_ALL_perc[which(M_ALL_perc$CODE%in%Code_stat_ok),]
+
+M_ALL_DEP_perc<-M_ALL_perc[which(M_ALL_perc$KendalT.p.value<=pvalue),]
+
+
+c1<-which(M_ALL$CODE%in%Code_stat_ok)
+c2<-which(M_ALL_perc$CODE%in%Code_stat_ok)
+
 
 M_ALL_DEP_POS<-M_ALL_DEP[M_ALL_DEP$KendalT.value>0,]
 M_ALL_DEP_POS_perc<-M_ALL_DEP_perc[M_ALL_DEP_perc$KendalT.value>0,]
