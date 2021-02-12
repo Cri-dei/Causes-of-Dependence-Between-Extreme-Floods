@@ -55,6 +55,23 @@ path<-c("C:/PROJECTS 2021/QQ")
 #path<-c("C:/Users/39349/Documents/Regional")
 
 
+########### LOAD DATA OF LAST VERSION ########
+########### NEW DATASET ######################
+############ MAX ANNUAL ######################
+
+setwd(paste0(path,"/Results/POT_max"))
+
+load("Pvalue.RData")
+
+load(paste0("M_ALLbonf_perc_LAG_",Lag_time,".RData"))
+
+load(file=paste0("M_ALL_PERC_POT_MAX_lag_",Lag_time,".RData"))
+load(file=paste0("M_ALLbonf_DEP_perc_LAG_",Lag_time,".RData"))
+load(file=paste0("M_ALLbonf_IND_perc_LAG_",Lag_time,".RData"))
+load(file=paste0("POT_MAX_lag",Lag_time,".RData"))
+
+
+####### OLD DATASET #############
 setwd(paste0(path,"/Lag time/Lagtime_",Lag_time,"/Workspace_Bonf"))
 load(paste0("M_ALLbonf_perc_LAG_",Lag_time,".RData"))
 
@@ -75,8 +92,8 @@ load(file=paste0("M_ALLbonf_IND_perc_LAG_",Lag_time,".RData"))
 
 
 
-setwd(paste0(path,"/Lag time/Lagtime_",Lag_time,"/Plot_Bonf"))
-
+#setwd(paste0(path,"/Lag time/Lagtime_",Lag_time,"/Plot_Bonf"))
+setwd(paste0(path,"/Results_update/beforerun"))
 
 
 ####################          PLOT CODE            ##########################                      
@@ -397,7 +414,7 @@ legend("topright", legend=c("Near","Far"), col=c(rgb(0,0,1,1/4),rgb(1,0,0,1/4)),
 #hist(M_far_01_POS$N.SY.N.ALL, add=T,col=rgb(1,0,0,1/4),cex.lab=1.3)
 
 par(mar=c(5,5,0,3))
-hist(M_far_01_POS$N.SY.N.ALL,col=rgb(1,0,0,1/4), xlab="Syn", ylim=c(100,0),main="", xlim=c(0,1), ylab="",cex.lab=1.2) 
+hist(M_far_01_POS$N.SY.N.ALL,col=rgb(1,0,0,1/4), xlab="Syn", ylim=c(200,0),main="", xlim=c(0,1), ylab="",cex.lab=1.2) 
 
 dev.off()
 
