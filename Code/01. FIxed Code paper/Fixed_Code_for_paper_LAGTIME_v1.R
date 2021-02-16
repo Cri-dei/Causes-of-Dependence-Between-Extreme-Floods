@@ -144,26 +144,26 @@ for(i in 1:nrow(DEP_m))
        
 MATRIX2<-CATCHM_DEPDEP
 
-
 r2<-(length(which(is.na(MATRIX2[,1])=="FALSE")))
+Diff2<-data.frame(matrix(NA,r2/2,ncol(MATRIX2)))
+colnames(Diff2)<-colnames(MATRIX2)
 
 NC<-which(colnames(MATRIX2)=="N_couple")
 Cl<-which(colnames(MATRIX2)=="Class")
-Bv<-nrow(MATRIX2)/2
-Diff2<-MATRIX2[1:Bv,]
+#Bv<-nrow(MATRIX2)/2
+#Diff2<-MATRIX2[1:Bv,]
 
 x<-1
-for (i in 2:r2)
+for (i in 2:(r2/2))
 {
-if (MATRIX2[i,NC]==MATRIX2[i-1,NC] )
+if (MATRIX2$N_couple[i]==MATRIX2$N_couple[i-1] )
 {                      
  Diff2[x,]<-1-(pmin(MATRIX2[i,],MATRIX2[i-1,])/pmax(MATRIX2[i,],MATRIX2[i-1,]))
 #Diff2[x,]<-abs((MATRIX2[i,]-MATRIX2[i-1,])/pmax(MATRIX2[i,],MATRIX2[i-1,]))
 #Diff2[x,1:41]<-DEPDEP[i,]-DEPDEP[i-1,]
-Diff2[x,NC]<-MATRIX2[i,NC]
-Diff2[x,NC+1]<-MATRIX2[i,NC+1]
-Diff2[x,NC+1]<-MATRIX2[i,NC+1]
-Diff2[x,Cl]<-MATRIX2[i,Cl]
+Diff2$N_couple[x]<-MATRIX2$N_couple[i]
+Diff2$Distance[x]<-MATRIX2$Distance[i]
+Diff2$Class[x]<-MATRIX2$Class[i]
 }else{x<-x+1}
 }
 
