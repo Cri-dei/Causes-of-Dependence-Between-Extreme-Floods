@@ -41,7 +41,7 @@ library(scatterplot3d)
 ##CHOOSE LAG TIME
 #### LAG TIME #########
 
-Lag_time<-5
+Lag_time<-3
 
 #######################################################################
 #Load Workspace
@@ -62,7 +62,7 @@ setwd("C:/PROJECTS 2021/QQ/Results/POT_max")
 ################################################################
 
 #setwd(paste0(path,"/Lag time/Lagtime_",Lag_time,"/Workspace"))
-setwd(paste0(path,"/Results/POT_max"))
+#setwd(paste0(path,"/Results/POT_max"))
 
 
 #Workspace needed:
@@ -70,7 +70,13 @@ setwd(paste0(path,"/Results/POT_max"))
 #02)M_ALL_IND_perc_LAG_%% -> M_ALL for indipendent couples with selected pvalue
 #03)M_ALL_0.01_perc_LAG_%% -> M_ALL for dependent couples with selected pvalue and positive
 
+setwd(paste0("C:/PROJECTS 2021/QQ/Results_update/pvalue",pvalue))
+
 load("Pvalue.RData")
+
+pvalue<-0.008
+Lag_time<-3
+
 
 load(file=paste0("M_ALL_perc_LAG_",Lag_time,".RData"))
 load(file=paste0("M_ALL_IND_perc_",pvalue,"_LAG_",Lag_time,".RData"))
@@ -81,10 +87,11 @@ load(file=paste0("M_ALL_",pvalue,"_perc_LAG_",Lag_time,".RData"))
 ################################################################
 
 
+
 setwd(paste0(path,"/Lag time/Lagtime_",Lag_time,"/Workspace_Bonf"))
 load(paste0("M_ALLbonf_perc_LAG_",Lag_time,".RData"))
 
-
+setwd("C:/PROJECTS 2021/QQ/Results_update")
 ############# Load all the data ##########################
 
 
@@ -124,9 +131,8 @@ M_ALL_0.01_POS_perc$Class[M_ALL_0.01_POS_perc$X.1==2]<-"Depdep"
 ###########################CHOOSE INITIAL MATRIX#################################
 
 ## DEPENDENT COUPLES
-Var_1<-c("N.SY.N.ALL","BFIHOST....", "SAAR_61.90","KendalT.value", "Class",        
+Var_1<-c("N.SY.N.ALL","BFIHOST....", "SAAR_61-90","KendalT.value", "Class",        
          "X.1","Distance.x","KT_pvalue_Asy", "Num_Syncr_occ", "ID_Station_1","ID_Station_2" )
-
 
 M1_DEP_0<-M_ALL_0.01_POS_perc[,Var_1]
 
@@ -138,6 +144,7 @@ M1_IND_0<-M_ALL_IND_perc0.01[,Var_1]
 
 colnames(M1_IND_0)<-c("Meteo","Hydrology","Climatology","KendallTau","Class","X.1","Distance","Asypvalue","Num Syn","Station1","Station2")
 
+#####################
 
 
 ########## Choose Meterological Index  ############
@@ -148,8 +155,8 @@ M1_IND_0[,1]<- 1-M1_IND_0[,1]
 ######## Choose Climatological Index
 # SAAR
 
-M1_DEP_0[,3]<- M_ALL_0.01_POS_perc$SAAR_61.90
-M1_IND_0[,3]<- M_ALL_IND_perc0.01$SAAR_61.90
+M1_DEP_0[,3]<- M_ALL_0.01_POS_perc$'SAAR_61-90'
+M1_IND_0[,3]<- M_ALL_IND_perc0.01$'SAAR_61-90'
 
 
 M_ALL_IND_perc<-M_ALL_IND_perc0.01
@@ -160,14 +167,19 @@ colnames(Density_perc)<-c("CODE","Selected","DEP_MeteoHydro","DEP_MeteoClima","D
 
 #setwd(paste0(path,"/Lag time/Lagtime_",Lag_time,"/Plot_bonf"))
 
-setwd("C:/PROJECTS 2021/QQ/Results/POT_max")
+#setwd("C:/PROJECTS 2021/QQ/Results/POT_max")
 
-pdf(file=paste0("try2.pdf"),width=9, height=9)  
+setwd("C:/PROJECTS 2021/QQ/Results_update")
+
+pdf(file=paste0("FINAL_maxalt",pvalue,".pdf"),width=9, height=9)  
 
 xxx<-1
 
-Predictors<-c("Maximum.altitude","Arable.horticultural", "Grassland", 
+Predictors<-c("Arable.horticultural", "Grassland", 
               "BFIHOST....","QMED","SPRHOST","Urban.extent", "DPSBAR..m.km.","LDP..km.")
+
+#Predictors<-c("Maximum.altitude","Arable.horticultural", "Grassland", 
+#              "BFIHOST....","QMED","SPRHOST","Urban.extent", "DPSBAR..m.km.","LDP..km.")
 
 #,"Max.Min.Altitude"
 # Predictors<-c("Arable.horticultural", "Grassland", "Mountain.heath.bog","Urban.extent",         
@@ -183,13 +195,14 @@ Predictors<-c("Maximum.altitude","Arable.horticultural", "Grassland",
 v1<- match(Predictors,colnames(M_ALL_0.01_POS_perc))
 #v1<-Predictors
  
-for(hh in 4:length(v1)){
+#for(hh in 4:length(v1)){
 
   
-    #hh<-5
+    hh<-5
 
-  k<-combinations(length(Predictors), hh, v=v1, set=TRUE, repeats.allowed=FALSE)
-  
+    k<-combinations(length(Predictors), hh, v=v1, set=TRUE, repeats.allowed=FALSE)
+    k<-cbind(25,k)
+    
     #ff<-1
 for(ff in 1:nrow(k)){
     
@@ -720,7 +733,7 @@ for(ff in 1:nrow(k)){
     
     xxx<-xxx+1
   }
-}
+#}
 
 dev.off ()
 
