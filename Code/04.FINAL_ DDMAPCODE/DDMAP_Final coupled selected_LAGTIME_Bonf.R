@@ -173,7 +173,7 @@ M_ALL_0.01_POS_perc$Class[M_ALL_0.01_POS_perc$X.1==2]<-"Depdep"
 ###########################CHOOSE INITIAL MATRIX#################################
 
 ## DEPENDENT COUPLES
-Var_1<-c("N.SY.N.ALL","BFIHOST....", "SAAR_61.90","KendalT.value", "Class",        
+Var_1<-c("N.SY.N.ALL","BFIHOST....", "SAAR_61-90","KendalT.value", "Class",        
           "X.1","Distance.x","KT_pvalue_Asy", "Num_Syncr_occ", "ID_Station_1","ID_Station_2" )
 
   
@@ -202,8 +202,8 @@ M1_IND_0[,1]<- 1-M1_IND_0[,1]
 ######## Choose Climatological Index
 # SAAR
 
-M1_DEP_0[,3]<- M_ALL_0.01_POS_perc$SAAR_61.90
-M1_IND_0[,3]<- M_ALL_IND_perc0.01$SAAR_61.90
+M1_DEP_0[,3]<- M_ALL_0.01_POS_perc$'SAAR_61-90'
+M1_IND_0[,3]<- M_ALL_IND_perc0.01$'SAAR_61-90'
 
 
 #setwd(paste0("C:/Users/39349/Documents/Regional/Lag time/Lagtime_",Lag_time,"/Plot"))
