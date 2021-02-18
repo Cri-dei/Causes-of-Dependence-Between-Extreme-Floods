@@ -206,8 +206,9 @@ M1_DEP_0[,3]<- M_ALL_0.01_POS_perc$SAAR_61.90
 M1_IND_0[,3]<- M_ALL_IND_perc0.01$SAAR_61.90
 
 
-setwd(paste0("C:/Users/39349/Documents/Regional/Lag time/Lagtime_",Lag_time,"/Plot"))
- 
+#setwd(paste0("C:/Users/39349/Documents/Regional/Lag time/Lagtime_",Lag_time,"/Plot"))
+setwd("C:/PROJECTS 2021/QQ/Results_update")
+
 xxx<-1
 
 Predictors<-c("Maximum.altitude","Arable.horticultural", "Grassland", "Mountain.heath.bog","Urban.extent","ASPBAR..?..",         
