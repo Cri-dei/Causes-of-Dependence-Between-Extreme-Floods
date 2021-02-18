@@ -238,10 +238,10 @@ hh<-4
     ############ FINAL DRIVER SELECTED FOR HYDROLOGICAL INDEX #############
     
     
-    Final_D<-c("X50.Altitude","BFIHOST....","SPRHOST","LDP..km.", "Mountain.heath.bog" , 
+    Final_D<-c("50 Altitude","BFIHOST....","SPRHOST","LDP..km.", "Mountain.heath.bog" , 
                "Arable.horticultural","Catchment.area","PROPWET")
     
-    Final_D<-c("X50.Altitude","BFIHOST....","SPRHOST","LDP..km.","Catchment.area","PROPWET")
+    #Final_D<-c("50 Altitude","BFIHOST....","SPRHOST","LDP..km.","Catchment.area","PROPWET")
   
     M1_DEP_0[,2]<- apply(M_ALL_0.01_POS_perc[,Final_D],1,mean)   
     M1_IND_0[,2]<- apply(M_ALL_IND_perc0.01[,Final_D],1,mean)   
