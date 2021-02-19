@@ -692,7 +692,7 @@ hh<-4
     
     #ggsave("C:/Users/39349/Documents/Regional/Plot/DDMAP_AFTERREVIEW_coulrain.pdf",G1, width = 29, height = 34, units = "cm")
     
-    ggsave("07.DDMAP2.jpeg",G1, units="in", dpi=400, width=10.28,height=16.76)
+    ggsave("07.DDMAP2_new.jpeg",G1, units="in", dpi=400, width=10.28,height=16.76)
 
     
      ###PUT IN THIS SITE:https://pdftoimage.com/it/##
@@ -735,7 +735,7 @@ hh<-4
     G1<-grid.arrange(P1_DEP, P1_IND, P2_DEP, P2_IND, P3_DEP, P3_IND,nrow=3,ncol=2, 
                      top = textGrob("DEPENDENT                                                                     INDEPENDENT",gp=gpar(fontsize=18)), heights=c(0.3,0.3,0.3) )
     
-    ggsave("DDMAP_DEP_IND8.pdf",G1, width = 29, height = 34, units = "cm")
+    ggsave("DDMAP_DEP_IND8_new.pdf",G1, width = 29, height = 34, units = "cm")
     
     grid.arrange(P4_DEP,P4_IND, nrow=1,ncol=2)
     
