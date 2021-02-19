@@ -265,7 +265,7 @@ for(hh in 1:8){
 
 dev.off ()
 
-write.table(Summary_boxplot, file=paste0("Summary_Boxplot_",pvalue,vv,".txt"))
-write.table(Summary_boxplot2, file=paste0("Difference_13quart_",pvalue,vv,".txt"))
+write.table(Summary_boxplot, file=paste0("Summary_Boxplot_",pvalue,".txt"))
+write.table(Summary_boxplot2, file=paste0("Difference_13quart_",pvalue,".txt"))
 
 
