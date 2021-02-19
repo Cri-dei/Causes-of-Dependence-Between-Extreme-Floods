@@ -196,6 +196,7 @@ M_ALL_adj$CHECK2<- M_ALL_adj$KendalT.p.value<=Pv_th
 
 
 DEP<- M_ALL_adj[which(M_ALL_adj$CHECK2=="TRUE"),]
+IND<- M_ALL_adj[which(M_ALL_adj$CHECK2=="FALSE"),]
 
 # CODE STATIONS with adjusted pvalue
 
@@ -224,17 +225,19 @@ for( i in 1:nrow(M_ALL))
 
 M_ALL_perc <- merge(M_ALL, Diff2, by.x = "CODE", by.y = "N_couple") 
 
+coupleok<- which(M_ALL$CODE%in%M_ALL_perc$CODE)
 
+M_ALL<-M_ALL[coupleok,]
 ############# FOR FALSE DISCOVERY RATE ADJUSTED PVALUE ####################
 
 
-M_ALL_DEP<-M_ALL[which(M_ALL$KendalT.p.value<=pvalue),]
+#M_ALL_DEP<-M_ALL[which(M_ALL$KendalT.p.value<=pvalue),]
 
 M_ALL_DEP<- M_ALL[which(M_ALL$CODE%in%Code_stat_ok),]
 
 M_ALL_DEP_perc<-M_ALL_perc[which(M_ALL_perc$CODE%in%Code_stat_ok),]
 
-M_ALL_DEP_perc<-M_ALL_perc[which(M_ALL_perc$KendalT.p.value<=pvalue),]
+#M_ALL_DEP_perc<-M_ALL_perc[which(M_ALL_perc$KendalT.p.value<=pvalue),]
 
 
 c1<-which(M_ALL$CODE%in%Code_stat_ok)
@@ -308,6 +311,9 @@ for( i in 1:nrow(M_ALL_DEP_POS_perc))
 #########SAVE ALL DATAFRAME ############################
 
 #setwd(paste0(path,"/Lag time/Lagtime_",Lag_time,"/Workspace_Bonf"))
+setwd("C:/PROJECTS 2021/QQ/Results_update")
+
+Lag_time<-3
 
 save(Pv_th,file="Pvalue.RData")
 save(M_ALL,M_ALL_perc,M_ALL_adj,file=paste0("M_ALLbonf_perc_LAG_",Lag_time,".RData"))
@@ -329,7 +335,9 @@ print(paste0("BE CAREFUL: The pvalue selected is:",pvalue))
 ########### FOR DEPENDENT AND INDEPENDENT ##########################?
 #Save possibility
 
-pvalue<-0.01
+pvalue<-0.008
+
+
 ###### ATTENTION: NAME OF VARIABLE ARE FOR 0.01 
 
 M_ALL_0.01<- M_ALL[M_ALL$KendalT.p.value<=pvalue,]
@@ -346,7 +354,9 @@ M_ALL_IND_perc0.01<- M_ALL_perc[M_ALL_perc$KendalT.p.value>pvalue,]
 
 #########SAVE ALL DATAFRAME ############################
 
-setwd(paste0(path,"/Lag time/Lagtime_",Lag_time,"/Workspace"))
+#setwd(paste0(path,"/Lag time/Lagtime_",Lag_time,"/Workspace"))
+setwd(paste0("C:/PROJECTS 2021/QQ/Results_update/pvalue",pvalue))
+
 
 save(pvalue,file="Pvalue.RData")
 save(M_ALL,M_ALL_perc,file=paste0("M_ALL_perc_LAG_",Lag_time,".RData"))
