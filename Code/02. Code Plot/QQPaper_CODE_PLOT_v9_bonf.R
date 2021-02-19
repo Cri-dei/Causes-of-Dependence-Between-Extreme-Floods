@@ -43,7 +43,7 @@ library(magick)
 #THIS WILL GIVE YOU ERRORS 
 
 #Lagtime 5 or 7 days
-Lag_time<-5
+Lag_time<-3
 
 
 ##Choose directory
@@ -59,7 +59,9 @@ path<-c("C:/PROJECTS 2021/QQ")
 ########### NEW DATASET ######################
 ############ MAX ANNUAL ######################
 
-setwd(paste0(path,"/Results/POT_max"))
+setwd("C:/PROJECTS 2021/QQ/Results_update")
+
+#setwd(paste0(path,"/Results/POT_max"))
 
 load("Pvalue.RData")
 
@@ -90,7 +92,7 @@ load(file=paste0("M_ALLbonf_IND_perc_LAG_",Lag_time,".RData"))
 #load("M_ALL_001.RData")
 #load("C:/Users/39349/Documents/Regional/Workspace/M_ALL_INDIPENDENT_perc.RData")
 
-
+### Selecting same couple
 
 #setwd(paste0(path,"/Lag time/Lagtime_",Lag_time,"/Plot_Bonf"))
 setwd(paste0(path,"/Results_update/beforerun"))
@@ -372,6 +374,8 @@ predicted<-cbind(q1,predicted.intervals[,1])
 require(data.table)
 predicted<- data.table(predicted, key="q1")
 
+pred2<-predicted[1:8105,]
+
 par(mfrow=c(1,1))
 
 xx = c(220,220,240,240)
@@ -385,15 +389,17 @@ Near_perc_POS<-M_ALL_DEP_POS_perc[M_ALL_DEP_POS_perc$Distance.x<=Dist_sel,]
 M_far_01_POS<-M_ALL_DEP_POS[M_ALL_DEP_POS$Distance>Dist_sel,]
 Far_perc_POS<-M_ALL_DEP_POS_perc[M_ALL_DEP_POS_perc$Distance.x>Dist_sel,]
 
+maxd<-max(M_ALL_DEP$Distance)+2
+          
 ############### 
 plot(M_ALL_DEP$Distance[M_ALL_DEP$Distance<Dist_sel], M_ALL_DEP$KendalT.value[M_ALL_DEP$Distance<230],col=rgb(0,0,1,1/4),xlab='Distance [km]',
-                                                ylab="Kendall's tau",pch=19, cex.lab=1.2, cex.axis=1.2,  cex.sub=1.2, ylim=c(0,1), xlim=c(0,600))
+                                                ylab="Kendall's tau",pch=19, cex.lab=1.2, cex.axis=1.2,  cex.sub=1.2, ylim=c(0,1), xlim=c(0,maxd))
 
 points(M_ALL_DEP$Distance[M_ALL_DEP$Distance>=Dist_sel], M_ALL_DEP$KendalT.value[M_ALL_DEP$Distance>=230],col=rgb(1,0,0,1/4),xlab='Distance [km]',
                                                                 ylab="Kendall's tau",pch=19, cex.lab=1.2, cex.axis=1.2,  cex.sub=1.2, ylim=c(0,1))
 
 
-lines(predicted,lwd=2,col='deepskyblue4')
+lines(pred2,lwd=2,col='deepskyblue4')
 abline(v =230, untf = FALSE, col="darkgrey",lty = "dashed",lwd=2)
 
 polygon(xx,yy,col = rgb(0.8,0.8,0.8,0.5), border = FALSE)
@@ -523,6 +529,8 @@ lbls <- c(paste0("High Syn(>=60%): ",HSyn), paste0("Medium Syn(>=40% and <60%): 
 pie(slices, labels = lbls, main="Dependent Couples")
 
 dev.off()
+
+
 load("C:/Users/39349/Documents/Regional/Workspace/Ind_perc.RData")
 
 
