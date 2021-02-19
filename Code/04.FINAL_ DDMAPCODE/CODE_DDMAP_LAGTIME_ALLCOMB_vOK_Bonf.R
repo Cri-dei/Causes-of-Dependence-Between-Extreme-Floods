@@ -74,7 +74,7 @@ setwd(paste0("C:/PROJECTS 2021/QQ/Results_update/pvalue",pvalue))
 
 load("Pvalue.RData")
 
-pvalue<-0.008
+#pvalue<-0.008
 Lag_time<-3
 
 
@@ -171,12 +171,12 @@ colnames(Density_perc)<-c("CODE","Selected","DEP_MeteoHydro","DEP_MeteoClima","D
 
 setwd("C:/PROJECTS 2021/QQ/Results_update")
 
-pdf(file=paste0("FINAL_maxalt",pvalue,".pdf"),width=9, height=9)  
+pdf(file=paste0("FINAL_MALT",pvalue,".pdf"),width=9, height=9)  
 
 xxx<-1
 
 Predictors<-c("Arable.horticultural", "Grassland", 
-              "BFIHOST....","QMED","SPRHOST","Urban.extent", "DPSBAR..m.km.","LDP..km.")
+              "QMED","DPSBAR..m.km.","LDP..km.","Catchment.area")
 
 #Predictors<-c("Maximum.altitude","Arable.horticultural", "Grassland", 
 #              "BFIHOST....","QMED","SPRHOST","Urban.extent", "DPSBAR..m.km.","LDP..km.")
@@ -195,13 +195,13 @@ Predictors<-c("Arable.horticultural", "Grassland",
 v1<- match(Predictors,colnames(M_ALL_0.01_POS_perc))
 #v1<-Predictors
  
-#for(hh in 4:length(v1)){
+for(hh in 4:length(v1)){
 
   
-    hh<-5
+    #hh<-4
 
     k<-combinations(length(Predictors), hh, v=v1, set=TRUE, repeats.allowed=FALSE)
-    k<-cbind(25,k)
+    k<-cbind(25,32,49,k)
     
     #ff<-1
 for(ff in 1:nrow(k)){
@@ -733,7 +733,7 @@ for(ff in 1:nrow(k)){
     
     xxx<-xxx+1
   }
-#}
+}
 
 dev.off ()
 
