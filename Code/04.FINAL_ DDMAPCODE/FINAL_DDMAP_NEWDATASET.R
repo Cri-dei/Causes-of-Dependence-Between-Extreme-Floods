@@ -48,14 +48,14 @@ Lag_time<-3
 
 ############# Load all the data ##########################
 
-setwd("C:/PROJECTS 2021/QQ/Results_update")
+setwd(paste0(path,"/Results_update/Max_annual_by_POT/lag",Lag_time,"/Final workspace"))
 
 
 load("Pvalue.RData")
 
-load(file=paste0("M_ALLbonf_perc_LAG_",Lag_time,".RData"))
-load(file=paste0("M_ALLbonf_DEP_perc_LAG_",Lag_time,".RData"))
-load(file=paste0("M_ALLbonf_IND_perc_LAG_",Lag_time,".RData"))
+load(paste0("M_ALL_perc_newdataset_LAG_",Lag_time,".RData"))
+load(file=paste0("M_ALL_IND_perc_newdataset_LAG_",Lag_time,".RData"))
+load(file=paste0("M_ALL_DEP_perc_newdataset_LAG_",Lag_time,".RData"))
 
 pvalue<- Pv_th
 
@@ -76,8 +76,8 @@ print( paste("The pvalue selected is",pvalue))
 
 ##################################
 
-M_ALL_0.01_POS_perc$Class[M_ALL_0.01_POS_perc$N.SY.N.ALL>=0.60]<-"High Syn"
-M_ALL_0.01_POS_perc$X.1[M_ALL_0.01_POS_perc$N.SY.N.ALL>=0.60]<-c(3)
+M_ALL_0.01_POS_perc$Class[M_ALL_0.01_POS_perc$N.SY.N.ALL>=0.63]<-"High Syn"
+M_ALL_0.01_POS_perc$X.1[M_ALL_0.01_POS_perc$N.SY.N.ALL>=0.63]<-c(3)
 M_ALL_0.01_POS_perc$Class[M_ALL_0.01_POS_perc$X.1==1]<-"Depind"
 M_ALL_0.01_POS_perc$Class[M_ALL_0.01_POS_perc$X.1==2]<-"Depdep"
 
