@@ -67,6 +67,9 @@ M_ALL$Distance<- M_ALL$Distance/1000
 
 print(paste("Selected lag time is:",Lag_time, "days"))
 
+#######################################################################################################################################################
+# FIRST PART: CALCULATE CATCHM CHARACTERISTICS AND DIFFERENCE
+
 
 ### CATCHMENT INFO FOR ALL THE COUPLES: DEP AND IND ##############
    ######## CATCHMENT INFO #####################
@@ -143,8 +146,7 @@ colnames(Diff2)<-colnames(MATRIX2)
 
 NC<-which(colnames(MATRIX2)=="N_couple")
 Cl<-which(colnames(MATRIX2)=="Class")
-#Bv<-nrow(MATRIX2)/2
-#Diff2<-MATRIX2[1:Bv,]
+
 
 x<-1
 for (i in 2:(r2)) #i must go on the length of CAtchemnet info
@@ -152,8 +154,6 @@ for (i in 2:(r2)) #i must go on the length of CAtchemnet info
 if (MATRIX2$N_couple[i]==MATRIX2$N_couple[i-1] )
 {                      
  Diff2[x,]<-1-(pmin(MATRIX2[i,],MATRIX2[i-1,])/pmax(MATRIX2[i,],MATRIX2[i-1,]))
-#Diff2[x,]<-abs((MATRIX2[i,]-MATRIX2[i-1,])/pmax(MATRIX2[i,],MATRIX2[i-1,]))
-#Diff2[x,1:41]<-DEPDEP[i,]-DEPDEP[i-1,]
 Diff2$N_couple[x]<-MATRIX2$N_couple[i]
 Diff2$Distance[x]<-MATRIX2$Distance[i]
 Diff2$Class[x]<-MATRIX2$Class[i]
@@ -165,6 +165,12 @@ Diff2$Class[x]<-MATRIX2$Class[i]
 
 Diff2<-data.frame(Diff2)
 
+###########################################################################################################
+
+#If you have already runned that part you can start from here
+
+load("Diff2_all.RData")
+
 
 ######## FOR BONFERRONI Adjustment ###########################
 
@@ -172,12 +178,6 @@ Diff2<-data.frame(Diff2)
 
 
 ###### PRE PROCESSING ########
-
-###### CONSIDERING JUST POSITIVE VALUES OF KT ##############
-
-# Removing negative KT and negative pvalue
-
-#M_ALL_processed<-M_ALL[which(M_ALL$KendalT.value>=0),]
 
 M_ALL_processed<-M_ALL
 
@@ -243,9 +243,6 @@ M_ALL_DEP_perc<-M_ALL_perc[which(M_ALL_perc$CODE%in%Code_stat_ok),]
 
 M_ALL_DEP_perc<-M_ALL_perc[which(M_ALL_perc$KendalT.p.value<=pvalue),]
 
-
-c1<-which(M_ALL$CODE%in%Code_stat_ok)
-c2<-which(M_ALL_perc$CODE%in%Code_stat_ok)
 
 
 M_ALL_DEP_POS<-M_ALL_DEP[M_ALL_DEP$KendalT.value>0,]
@@ -320,14 +317,14 @@ for( i in 1:nrow(M_ALL_DEP_POS_perc))
 
 #########SAVE ALL DATAFRAME ############################
 
-setwd("C:/PROJECTS 2021/QQ/Workspace/POT_max/Final matrix")
+setwd(paste0(path,"/Results_update/Max_annual_by_POT/lag",Lag_time,"/Final workspace"))
 
-save(Pv_th,file="Pvalue.RData")
-save(M_ALL,M_ALL_perc,M_ALL_adj,file=paste0("M_ALLbonf_perc_LAG_",Lag_time,".RData"))
-save(M_ALL_IND,M_ALL_IND_perc,Pv_th,file=paste0("M_ALLbonf_IND_perc_LAG_",Lag_time,".RData"))
-save(M_ALL_DEP,M_ALL_DEP_perc,M_ALL_DEP_POS_perc,M_ALL_DEP_POS,Pv_th,file=paste0("M_ALLbonf_DEP_perc_LAG_",Lag_time,".RData"))
+save(Pv_th,Pv_Asy_th,file="Pvalue.RData")
+save(M_ALL,M_ALL_perc,M_ALL_adj,file=paste0("M_ALL_perc_newdataset_LAG_",Lag_time,".RData"))
+save(M_ALL_IND,M_ALL_IND_perc,Pv_th,file=paste0("M_ALL_IND_perc_newdataset_LAG_",Lag_time,".RData"))
+save(M_ALL_DEP,M_ALL_DEP_perc,M_ALL_DEP_POS_perc,M_ALL_DEP_POS,Pv_th,file=paste0("M_ALL_DEP_perc_newdataset_LAG_",Lag_time,".RData"))
 
-print(paste0("BONFERRONI ADJ PVALUE: Everything have been saved in: ",path,"/Lag time/Lagtime_",Lag_time,"/Workspace_Bonf"))
+print(paste0("NEW DATASET - BONFERRONI ADJ PVALUE: Everything have been saved in: ",path,"/Results_update/Max_annual_by_POT/lag",Lag_time,"/Final workspace"))
 
 print(paste0("pvalue selected for Bonferroni is:",Pv_th))
 
