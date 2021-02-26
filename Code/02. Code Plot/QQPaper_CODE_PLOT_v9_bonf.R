@@ -4,6 +4,8 @@
 
 ###this is equal to V8 but for checking different lag time ####
 ######REVISED CODE AFTER 1 REVISION: 28 OCTOBER 2020#################
+# REVISION 26/02/20 
+
 #################################################################
 
 ########IN THIS CODE ARE CREATED THE PLOTS FOR PAPER:
@@ -59,42 +61,23 @@ path<-c("C:/PROJECTS 2021/QQ")
 ########### NEW DATASET ######################
 ############ MAX ANNUAL ######################
 
-setwd("C:/PROJECTS 2021/QQ/Results_update")
+setwd(paste0(path,"/Results_update/Max_annual_by_POT/lag",Lag_time))
 
-#setwd(paste0(path,"/Results/POT_max"))
-
-load("Pvalue.RData")
-
-load(paste0("M_ALLbonf_perc_LAG_",Lag_time,".RData"))
-
-load(file=paste0("M_ALL_PERC_POT_MAX_lag_",Lag_time,".RData"))
-load(file=paste0("M_ALLbonf_DEP_perc_LAG_",Lag_time,".RData"))
-load(file=paste0("M_ALLbonf_IND_perc_LAG_",Lag_time,".RData"))
-load(file=paste0("POT_MAX_lag",Lag_time,".RData"))
+load(file=paste0("Final_matrix_POTMAX_lag",Lag_time,"_newdataset.RData"))
 
 
-####### OLD DATASET #############
-setwd(paste0(path,"/Lag time/Lagtime_",Lag_time,"/Workspace_Bonf"))
-load(paste0("M_ALLbonf_perc_LAG_",Lag_time,".RData"))
-
-
-############# Load all the data ##########################
+setwd(paste0(path,"/Results_update/Max_annual_by_POT/lag",Lag_time,"/Final workspace"))
 
 
 load("Pvalue.RData")
 
-load(file=paste0("M_ALLbonf_perc_LAG_",Lag_time,".RData"))
-load(file=paste0("M_ALLbonf_DEP_perc_LAG_",Lag_time,".RData"))
-load(file=paste0("M_ALLbonf_IND_perc_LAG_",Lag_time,".RData"))
+load(paste0("M_ALL_perc_newdataset_LAG_",Lag_time,".RData"))
+load(file=paste0("M_ALL_IND_perc_newdataset_LAG_",Lag_time,".RData"))
+load(file=paste0("M_ALL_DEP_perc_newdataset_LAG_",Lag_time,".RData"))
 
 
-#load("ALLDATA01_andonlyPOSITIVE.RData")
-#load("M_ALL_001.RData")
-#load("C:/Users/39349/Documents/Regional/Workspace/M_ALL_INDIPENDENT_perc.RData")
+### Path plot
 
-### Selecting same couple
-
-#setwd(paste0(path,"/Lag time/Lagtime_",Lag_time,"/Plot_Bonf"))
 setwd(paste0(path,"/Results_update/0. Plot"))
 
 
@@ -110,12 +93,12 @@ op <- par(no.readonly = TRUE)
 set.seed(42)
 
 plot(M_ALL$KendalT.value, M_ALL$KendalT.p.value, xlab=c("Kendall's tau"), ylab=c("p-value"), col=M_ALL$Distance, cex.lab=1.2, cex.axis=1.2,  cex.sub=1.2) 
-abline(h =0.01, untf = FALSE, col="red",lty = "dashed",lwd=2) 
+abline(h =Pv_th, untf = FALSE, col="red",lty = "dashed",lwd=2) 
 
 par(new=TRUE, oma=c(12,2,1,1))
 layout(matrix(1:2,1))
 plot(M_ALL_DEP$KendalT.value, M_ALL_DEP$KendalT.p.value, xlab=c("Kendall's tau"), ylab=c("p-value"), col=M_ALL_DEP$Distance) 
-abline(h =0.01, untf = FALSE, col="red",lty = "dashed",lwd=2) 
+abline(h =Pv_th, untf = FALSE, col="red",lty = "dashed",lwd=2) 
 
 par(op)
 
