@@ -95,7 +95,7 @@ load(file=paste0("M_ALLbonf_IND_perc_LAG_",Lag_time,".RData"))
 ### Selecting same couple
 
 #setwd(paste0(path,"/Lag time/Lagtime_",Lag_time,"/Plot_Bonf"))
-setwd(paste0(path,"/Results_update/beforerun"))
+setwd(paste0(path,"/Results_update/0. Plot"))
 
 
 ####################          PLOT CODE            ##########################                      
@@ -355,7 +355,7 @@ ggsave("02.Correlogram_wlg_v3.jpeg", units="in",dpi=400, height=7,width =12)
 png(filename = "03_KTHIST-1.png",
     width = 10.33, height = 6.29, units = "in",   res =400) 
  
-gh<-which( M_ALL_DEP$KendalT.value>0 )
+gh<-which( M_ALL_DEP$KendalT.value>0)
 
 #Regression for Only positive
 q1<-M_ALL_DEP$Distance[gh]
@@ -374,15 +374,26 @@ predicted<-cbind(q1,predicted.intervals[,1])
 require(data.table)
 predicted<- data.table(predicted, key="q1")
 
-pred2<-predicted[1:8105,]
+pred2<-predicted[1:7649,]
 
 par(mfrow=c(1,1))
 
-xx = c(220,220,240,240)
+xx = c(200,200,220,220)
 yy = c(-1,1.5,1.5,-1)
 
+
+# xx = c(220,220,240,240)
+# yy = c(-1,1.5,1.5,-1)
+
 ## Distance selection
-Dist_sel<-230
+Dist_sel<-210
+
+
+
+DEP_near<-M_ALL_DEP_POS[which(M_ALL_DEP_POS$Distance<=Dist_sel),]
+DEP_far<-M_ALL_DEP_POS[which(M_ALL_DEP_POS$Distance>Dist_sel),]
+
+###########
 
 M_near_01_POS<-M_ALL_DEP_POS[M_ALL_DEP_POS$Distance<=Dist_sel,]
 Near_perc_POS<-M_ALL_DEP_POS_perc[M_ALL_DEP_POS_perc$Distance.x<=Dist_sel,]
@@ -392,15 +403,15 @@ Far_perc_POS<-M_ALL_DEP_POS_perc[M_ALL_DEP_POS_perc$Distance.x>Dist_sel,]
 maxd<-max(M_ALL_DEP$Distance)+2
           
 ############### 
-plot(M_ALL_DEP$Distance[M_ALL_DEP$Distance<Dist_sel], M_ALL_DEP$KendalT.value[M_ALL_DEP$Distance<230],col=rgb(0,0,1,1/4),xlab='Distance [km]',
+plot(M_ALL_DEP$Distance[M_ALL_DEP$Distance<Dist_sel], M_ALL_DEP$KendalT.value[M_ALL_DEP$Distance<Dist_sel],col=rgb(0,0,1,1/4),xlab='Distance [km]',
                                                 ylab="Kendall's tau",pch=19, cex.lab=1.2, cex.axis=1.2,  cex.sub=1.2, ylim=c(0,1), xlim=c(0,maxd))
 
-points(M_ALL_DEP$Distance[M_ALL_DEP$Distance>=Dist_sel], M_ALL_DEP$KendalT.value[M_ALL_DEP$Distance>=230],col=rgb(1,0,0,1/4),xlab='Distance [km]',
+points(M_ALL_DEP$Distance[M_ALL_DEP$Distance>=Dist_sel], M_ALL_DEP$KendalT.value[M_ALL_DEP$Distance>=Dist_sel],col=rgb(1,0,0,1/4),xlab='Distance [km]',
                                                                 ylab="Kendall's tau",pch=19, cex.lab=1.2, cex.axis=1.2,  cex.sub=1.2, ylim=c(0,1))
 
 
 lines(pred2,lwd=2,col='deepskyblue4')
-abline(v =230, untf = FALSE, col="darkgrey",lty = "dashed",lwd=2)
+abline(v =Dist_sel, untf = FALSE, col="darkgrey",lty = "dashed",lwd=2)
 
 polygon(xx,yy,col = rgb(0.8,0.8,0.8,0.5), border = FALSE)
 
