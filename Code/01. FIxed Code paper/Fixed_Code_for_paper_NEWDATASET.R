@@ -48,7 +48,7 @@ load("Final_matrix_POTMAX_lag3.RData")
 # load("Final_matrix_POTMAX_lag2.RData")
 # Lag_time<-5
 
-na_pos<-which(is.na(POT_matrix$CODE))
+na_pos<-which(is.na(POT_matrix$CODE)==TRUE)
 
 if(length(na_pos)>0){
   M_ALL<-POT_matrix[-na_pos,]
@@ -74,6 +74,7 @@ DEP_m<-data.frame(M_ALL)
 
 ############# CREATION CATCHMENT INFO MATRIX ##################
 
+possib<-c(100,1000,5000, 7000,8000,9000, 10000,30000,50000,70000,80000,100000,140000,160000,180000,190000,200000,216145)
 
 CATCHM_DEPDEP<-data.frame(matrix( , nrow =nrow(DEP_m)*2, ncol =ncol(M_in)+5+3+1))
 colnames(CATCHM_DEPDEP)<-c(colnames(M_in),"N_couple","Distance","Class","SAAR_61-90","SAAR_41-70","Min Altitude","50 Altitude","Max-Min Altitude","SPRHOST")
@@ -113,7 +114,10 @@ for(i in 1:nrow(DEP_m))
   if(length(D7)>0& length(D8)>0)
   {CATCHM_DEPDEP$SPRHOST[x]<-SPRHOST$SPRHOST....[D7]
   CATCHM_DEPDEP$SPRHOST[x+1]<-SPRHOST$SPRHOST....[D8]} } 
-    x<-x+2} 
+    x<-x+2}
+  
+  if(i%in%possib)
+  {print(paste("The code is running: couple",i,"of 216149"))}
 }  
 ###########################################################
 
@@ -123,7 +127,9 @@ for(i in 1:nrow(DEP_m))
        #### Percentage index#######
        
        
-       
+
+possib<-c(100,1000,5000, 7000,8000,9000, 10000,30000,50000,70000,80000,100000,140000,160000,180000,190000,200000,214706)
+
 MATRIX2<-CATCHM_DEPDEP
 
 r2<-(length(which(is.na(MATRIX2[,1])=="FALSE")))
@@ -147,6 +153,9 @@ Diff2$N_couple[x]<-MATRIX2$N_couple[i]
 Diff2$Distance[x]<-MATRIX2$Distance[i]
 Diff2$Class[x]<-MATRIX2$Class[i]
 }else{x<-x+1}
+
+  if(i%in%possib)
+  {print(paste("The code is running: couple",i,"of",(r2/2)))}  
 }
 
 Diff2<-data.frame(Diff2)
@@ -289,7 +298,7 @@ for( i in 1:nrow(M_ALL_DEP_POS_perc))
 
 #########SAVE ALL DATAFRAME ############################
 
-#setwd(paste0(path,"/Lag time/Lagtime_",Lag_time,"/Workspace_Bonf"))
+setwd("C:/PROJECTS 2021/QQ/Workspace/POT_max/Final matrix")
 
 save(Pv_th,file="Pvalue.RData")
 save(M_ALL,M_ALL_perc,M_ALL_adj,file=paste0("M_ALLbonf_perc_LAG_",Lag_time,".RData"))
