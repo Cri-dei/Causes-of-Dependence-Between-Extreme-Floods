@@ -45,6 +45,7 @@ library(pals)
 
 Lag_time<-3
 
+path<-c("C:/PROJECTS 2021/QQ")
 
 ############# Load all the data ##########################
 
@@ -649,7 +650,7 @@ G1<-grid.arrange(P1_DEP, P1_IND, P2_DEP, P2_IND, P3_DEP, P3_IND,nrow=3,ncol=2,
 
 # FINAL COMBINATION CHOOSED 
 
-setwd(paste0("C:/PROJECTS 2021/QQ/Results_update/1. Plot_Final_Comb5"))
+#setwd(paste0("C:/PROJECTS 2021/QQ/Results_update/1. Plot_Final_Comb5"))
 
 ggsave("07.DDMAP2_new.jpeg",G1, units="in", dpi=400, width=10.28,height=16.76)
 
@@ -782,8 +783,14 @@ dev.off()
 
 
 title=print(paste0("Hydrological Indexes selected: ",colnames(M_ALL_0.01_POS_perc[, Final_D])))
-
 ############################################################################################################?????   
 #}}
 
+##### BE CAUTIOUSSSSSSSSS!!!!!!!!!!!!!!!1111############
 
+### FOR SAVING DATA AND WORKSPACE ##
+
+# save.image("C:/PROJECTS 2021/QQ/Results_update/Max_annual_by_POT/lag3/Final Work_DDMAP/DDMAP_newdataset_ALL.RData")
+# save(M1_DEP,M1_IND,file="M1_DEPIND_DDMAP_newdataset.RData")
+
+#############
