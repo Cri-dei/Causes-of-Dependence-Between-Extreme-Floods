@@ -96,15 +96,15 @@ colnames(POT_matrix)<-c("CODE", "ID_Station_1",  "ID_Station_2","KendalT.value",
 lag_time<-3
 
 List_couple<- vector(mode = "list", length = nrow(Couples_investigate))
-List_couple_R<- vector(mode = "list", length = nrow(Couples_investigate))
-
+#List_couple_R<- vector(mode = "list", length = nrow(Couples_investigate))
+comb<-c(seq(377726,388521,200),388521)
 
 Threshold<-list()
 Th_num<-list()
 
 xx<-1
 
-for (yy in 1:nrow(Couples_investigate))
+for (yy in 377726:nrow(Couples_investigate))
 {
 
   
@@ -181,6 +181,9 @@ for (yy in 1:nrow(Couples_investigate))
     
     Year_final<- merge(X1,X2, by.x = "Var1", by.y = "Var1")
     Final_merged<-na.omit(merge(Station_1,Station_2, by.x = "Year", by.y = "Year"))
+    
+    if(yy%in%comb)
+    {print(paste("The code is running: couple",yy,"of",nrow(Couples_investigate)))}
     
     
     if(length(unique(Final_merged$Year))>5){
@@ -263,24 +266,24 @@ for (yy in 1:nrow(Couples_investigate))
       # Dep_12M<-POT_monthly_variable_max(Event_selection_1,Event_selection_2)
        
 
-      
-      if(TYPE_ANALYSIS== "Max Annual")
-      
-      
-      { 
+      # 
+      # if(TYPE_ANALYSIS== "Max Annual")
+      # 
+      # 
+      # { 
         # ANNUAL MAX FROM POT
         Dep_12A<-POT_annualmax(Event_selection_1,Event_selection_2)
         Dep_12_Discharge<-Dep_12A[,c("QPeak_1","QPeak_2")]
         Dep_12_select<-Dep_12A
-      }
-      else if(TYPE_ANALYSIS== "Variable POT Month")
-      {
-        # POT VARIABLE FOR MONTH
-        Dep_12M<-POT_monthly_variable_max(Event_selection_1,Event_selection_2)
-        Dep_12_Discharge<-Dep_12M[,c("QPeak_1","QPeak_2")]
-        Dep_12_select<-Dep_12M
-      }
-     
+      # }
+      # else if(TYPE_ANALYSIS== "Variable POT Month")
+      # {
+      #   # POT VARIABLE FOR MONTH
+      #   Dep_12M<-POT_monthly_variable_max(Event_selection_1,Event_selection_2)
+      #   Dep_12_Discharge<-Dep_12M[,c("QPeak_1","QPeak_2")]
+      #   Dep_12_select<-Dep_12M
+      # }
+      # 
       if(nrow(Dep_12_select)>0)
       {
           
@@ -295,8 +298,8 @@ for (yy in 1:nrow(Couples_investigate))
 
       Dep_12_Disc_R<-Randomization(Dep_12_Discharge,0.1)
       
-      List_couple_R[[xx]]<-Dep_12_Disc_R
-      names(List_couple_R)[xx]<-yy
+      #List_couple_R[[xx]]<-Dep_12_Disc_R
+      #names(List_couple_R)[xx]<-yy
       
       if(nrow(Dep_12_Disc_R)>=20)
       {
@@ -345,6 +348,7 @@ for (yy in 1:nrow(Couples_investigate))
           POT_matrix$KT_pvalue_Asy[xx]<- KT.test_Asy$p.value
           }
           
+        
         xx<-xx+1
 
           }        
@@ -372,10 +376,10 @@ if(TYPE_ANALYSIS== "Max Annual")
 
 setwd(paste0(path,"/Results_update/Max_annual_by_POT"))  
   
-save.image(paste0("POT_MAX_lag",lag_time,".RData"))
-save(POT_matrix,file=paste0("Final_matrix_POTMAX_lag",lag_time,".RData"))
+save.image(paste0("POT_MAX_lag",lag_time,"part2.RData"))
+save(POT_matrix,file=paste0("Final_matrix_POTMAX_lag",lag_time,"part2.RData"))
 
-write.table(POT_matrix,paste0("POT_MAX_lag",lag_time,".csv"), row.names=F, col.names=T)
+write.table(POT_matrix,paste0("POT_MAX_lag",lag_time,"part2.csv"), row.names=F, col.names=T)
 
 }else if(TYPE_ANALYSIS== "Variable POT Month")
 
