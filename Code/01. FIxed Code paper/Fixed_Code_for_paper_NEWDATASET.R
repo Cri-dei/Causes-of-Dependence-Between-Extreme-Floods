@@ -40,7 +40,7 @@ Lag_time<-3
 
 #Annual Max
 setwd(paste0(path,"/Results_update/Max_annual_by_POT/lag",Lag_time))
-load("Final_matrix_POTMAX_lag3.RData")
+load("Final_matrix_POTMAX_lag3_newdataset.RData")
 
 
 # #POT variable month
@@ -56,6 +56,11 @@ if(length(na_pos)>0){
   M_ALL<-POT_matrix
 }
 
+###### Taking off negative pvalue  ########
+
+negative_pvalue<-which(M_ALL$KendalT.p.value<0)
+
+M_ALL<-M_ALL[-negative_pvalue,]
 
 
 M_ALL$Distance<- M_ALL$Distance/1000 
@@ -165,10 +170,21 @@ Diff2<-data.frame(Diff2)
 
 # For All couples #
 
+
+###### PRE PROCESSING ########
+
+###### CONSIDERING JUST POSITIVE VALUES OF KT ##############
+
+# Removing negative KT and negative pvalue
+
+#M_ALL_processed<-M_ALL[which(M_ALL$KendalT.value>=0),]
+
+M_ALL_processed<-M_ALL
+
 ############### Bonferroni - False Discovery Rate ############################
 
 
-M_ALL_adj<-M_ALL[order(M_ALL$KendalT.p.value,decreasing=FALSE),]
+M_ALL_adj<-M_ALL_processed[order(M_ALL_processed$KendalT.p.value,decreasing=FALSE),]
 
 M_ALL_adj$Num<-seq(1,nrow(M_ALL_adj),1)
 
@@ -236,6 +252,9 @@ M_ALL_DEP_POS<-M_ALL_DEP[M_ALL_DEP$KendalT.value>0,]
 M_ALL_DEP_POS_perc<-M_ALL_DEP_perc[M_ALL_DEP_perc$KendalT.value>0,]
 
 M_ALL_IND<- M_ALL[-which(M_ALL$CODE%in%Code_stat_ok),]
+
+M_ALL_IND_POS<-M_ALL_IND[which(M_ALL_IND$KendalT.value>=0),]
+
 M_ALL_IND_perc<- M_ALL_perc[-which(M_ALL_perc$CODE%in%Code_stat_ok),]
 
 
@@ -262,6 +281,9 @@ ok<-which(M_ALLch_asy$CHECK=="TRUE")
 
 Pv_Asy_th<-M_ALLch_asy$KT_pvalue_Asy[ok[length(ok)]] 
 
+############## save just M_ALL ###########
+
+save.image(file="M_ALL_newdataset.RData")
 
 # ############################# ASY PART #################################
 # #Selection of Async data with more than 20 data and pvalue Bonferroni with ASY #
