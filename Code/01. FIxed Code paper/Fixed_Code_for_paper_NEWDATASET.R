@@ -147,7 +147,7 @@ Cl<-which(colnames(MATRIX2)=="Class")
 #Diff2<-MATRIX2[1:Bv,]
 
 x<-1
-for (i in 2:(r2/2))
+for (i in 2:(r2)) #i must go on the length of CAtchemnet info
 {
 if (MATRIX2$N_couple[i]==MATRIX2$N_couple[i-1] )
 {                      
